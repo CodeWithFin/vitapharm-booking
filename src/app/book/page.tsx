@@ -44,8 +44,11 @@ const ALL_SERVICES: CartService[] = [
   { id: 25, name: "Bikini Waxing",            category: "Waxing",  durationMinutes: 30, price: 2000 },
   { id: 26, name: "Brazilian Waxing",         category: "Waxing",  durationMinutes: 30, price: 2500 },
   // Consultations
-  { id: 28, name: "Dermatology Consultation", category: "Consultation", durationMinutes: 30, price: 3500 },
-  { id: 29, name: "Acne Specialist",          category: "Consultation", durationMinutes: 30, price: 5000 },
+  { id: 28, name: "Dermatology Consultation",       category: "Consultation", durationMinutes: 30, price: 3500 },
+  { id: 29, name: "Acne Specialist",                category: "Consultation", durationMinutes: 30, price: 5000 },
+  { id: 30, name: "Skin Attendant Consultation",    category: "Consultation", durationMinutes: 20, price: 1000 },
+  { id: 31, name: "Aesthetician Consultation",      category: "Consultation", durationMinutes: 30, price: 2000 },
+  { id: 32, name: "Skin Analysis",                  category: "Consultation", durationMinutes: 20, price: 1000 },
 ];
 
 const categoryIcons: Record<string, string> = {
