@@ -79,7 +79,7 @@ export default function SchedulePage() {
           </h1>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 32, alignItems: "start" }}>
+        <div className="book-layout" style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 32, alignItems: "start" }}>
           <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
 
             {/* Therapist selection */}

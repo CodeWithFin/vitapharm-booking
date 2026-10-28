@@ -50,15 +50,15 @@ export default function HomePage() {
       <Header />
 
       {/* Hero */}
-      <section style={{ paddingTop: 80, paddingBottom: "var(--section-gap)" }}>
+      <section style={{ paddingTop: 64, paddingBottom: "var(--section-gap)" }}>
         <div className="container">
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 64, alignItems: "center" }}>
+          <div className="hero-grid">
             <div>
               <div className="tag" style={{ marginBottom: 20 }}>Aesthetic &amp; Clinical Spa</div>
               <h1
                 style={{
                   fontFamily: "var(--font-heading)",
-                  fontSize: "clamp(40px, 5vw, 64px)",
+                  fontSize: "clamp(36px, 5vw, 64px)",
                   fontWeight: 600,
                   lineHeight: 1.1,
                   letterSpacing: "0.5px",
@@ -91,8 +91,8 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Booking Widget Preview */}
-            <div style={{ position: "relative" }}>
+            {/* Booking Widget Preview — hidden on mobile */}
+            <div className="hero-widget">
               <Card padding="none" style={{ overflow: "hidden" }}>
                 <div style={{ padding: "20px 20px 0", background: "var(--color-paper)", borderBottom: "1px solid var(--color-silver)" }}>
                   <p style={{ fontSize: "var(--text-caption)", color: "var(--color-slate)", marginBottom: 12 }}>Popular this week</p>
@@ -147,6 +147,24 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      <style>{`
+        .hero-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 64px;
+          align-items: center;
+        }
+        @media (max-width: 767px) {
+          .hero-grid {
+            grid-template-columns: 1fr;
+            gap: 40px;
+          }
+          .hero-widget {
+            display: none;
+          }
+        }
+      `}</style>
 
       {/* Stats */}
       <section style={{ background: "var(--color-ink)", padding: "48px 0" }}>

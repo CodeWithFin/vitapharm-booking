@@ -90,7 +90,7 @@ export default function BookPage() {
           </p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 340px", gap: 32, alignItems: "start" }}>
+        <div className="book-layout" style={{ display: "grid", gridTemplateColumns: "1fr 340px", gap: 32, alignItems: "start" }}>
           {/* Left: service menu */}
           <div>
             {/* Search */}
