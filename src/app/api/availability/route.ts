@@ -3,6 +3,8 @@ import { db } from "@/lib/db";
 import { appointments, appointmentResources, therapistServices } from "@/lib/db/schema";
 import { and, eq, gte, lte, inArray } from "drizzle-orm";
 import { z } from "zod";
+
+export const dynamic = "force-dynamic";
 import { addMinutes, parseISO, format } from "date-fns";
 
 const querySchema = z.object({

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
@@ -44,8 +44,15 @@ const navLinks = [
 const CELL_HEIGHT = 64;
 
 export default function AdminCalendar() {
-  const [weekStart, setWeekStart] = useState(startOfWeek(new Date(), { weekStartsOn: 1 }));
-  const weekDays = eachDayOfInterval({ start: weekStart, end: addDays(weekStart, 4) });
+  const [weekStart, setWeekStart] = useState<Date | null>(null);
+
+  useEffect(() => {
+    setWeekStart(startOfWeek(new Date(), { weekStartsOn: 1 }));
+  }, []);
+
+  const weekDays = weekStart
+    ? eachDayOfInterval({ start: weekStart, end: addDays(weekStart, 4) })
+    : [];
 
   return (
     <div style={{ minHeight: "100vh" }}>
@@ -72,13 +79,13 @@ export default function AdminCalendar() {
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
             <h1 style={{ fontSize: "var(--text-heading)", fontWeight: 600 }}>
-              Week of {format(weekStart, "MMM d")} — {format(addDays(weekStart, 4), "MMM d, yyyy")}
+              {weekStart ? `Week of ${format(weekStart, "MMM d")} — ${format(addDays(weekStart, 4), "MMM d, yyyy")}` : "Loading…"}
             </h1>
             <div style={{ display: "flex", gap: 4 }}>
-              <button onClick={() => setWeekStart(addDays(weekStart, -7))} style={{ width: 32, height: 32, borderRadius: 8, border: "1px solid var(--color-silver)", background: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <button onClick={() => weekStart && setWeekStart(addDays(weekStart, -7))} style={{ width: 32, height: 32, borderRadius: 8, border: "1px solid var(--color-silver)", background: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <ChevronLeft size={14} />
               </button>
-              <button onClick={() => setWeekStart(addDays(weekStart, 7))} style={{ width: 32, height: 32, borderRadius: 8, border: "1px solid var(--color-silver)", background: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <button onClick={() => weekStart && setWeekStart(addDays(weekStart, 7))} style={{ width: 32, height: 32, borderRadius: 8, border: "1px solid var(--color-silver)", background: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <ChevronRight size={14} />
               </button>
             </div>

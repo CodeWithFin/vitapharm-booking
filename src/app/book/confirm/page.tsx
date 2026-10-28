@@ -11,10 +11,11 @@ import { format } from "date-fns";
 
 export default function ConfirmPage() {
   const router = useRouter();
-  const [bookingRef] = useState(() => `VP-${Math.random().toString(36).slice(2, 8).toUpperCase()}`);
+  const [bookingRef, setBookingRef] = useState("");
   const [state, setState] = useState(getBookingState());
 
   useEffect(() => {
+    setBookingRef(`VP-${Math.random().toString(36).slice(2, 8).toUpperCase()}`);
     const s = getBookingState();
     if (s.cart.length === 0 || !s.otpVerified) { router.push("/book"); return; }
     setState(s);
