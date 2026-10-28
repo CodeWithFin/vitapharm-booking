@@ -39,8 +39,9 @@ async function sendSms(phone: string, message: string) {
   }
 
   const data = await res.json().catch(() => ({}));
-  // Tililtech returns { status_code, status_desc } — 1000 is success
-  return data.status_code === 1000 || data.status_code === "1000";
+  // Tililtech returns an array: [{ status_code, status_desc, ... }]
+  const result = Array.isArray(data) ? data[0] : data;
+  return result?.status_code === 1000 || result?.status_code === "1000";
 }
 
 export async function POST(req: NextRequest) {
