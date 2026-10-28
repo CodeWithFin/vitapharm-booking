@@ -10,28 +10,44 @@ import { CartService, getBookingState, setBookingState } from "@/lib/booking-sto
 import { Clock, Plus, Minus, ShoppingCart, ArrowRight, Search } from "lucide-react";
 import { Icon } from "@iconify/react";
 
-const CATEGORIES = ["All", "Facial", "Laser", "Body", "Consultation"];
+const CATEGORIES = ["All", "Facial", "Massage", "Waxing"];
 
 const ALL_SERVICES: CartService[] = [
-  { id: 1, name: "Hydra Facial", category: "Facial", durationMinutes: 60, price: 4500 },
-  { id: 2, name: "Chemical Peel", category: "Facial", durationMinutes: 45, price: 3800 },
-  { id: 3, name: "Microdermabrasion", category: "Facial", durationMinutes: 45, price: 3200 },
-  { id: 4, name: "Brightening Facial", category: "Facial", durationMinutes: 60, price: 4000 },
-  { id: 5, name: "Laser Hair Removal (Face)", category: "Laser", durationMinutes: 30, price: 2500 },
-  { id: 6, name: "Laser Hair Removal (Body)", category: "Laser", durationMinutes: 90, price: 6500 },
-  { id: 7, name: "Carbon Laser Facial", category: "Laser", durationMinutes: 60, price: 6000 },
-  { id: 8, name: "IPL Photofacial", category: "Laser", durationMinutes: 45, price: 5500 },
-  { id: 9, name: "Body Contouring", category: "Body", durationMinutes: 45, price: 5500 },
-  { id: 10, name: "Cellulite Treatment", category: "Body", durationMinutes: 60, price: 5000 },
-  { id: 11, name: "Initial Skin Consultation", category: "Consultation", durationMinutes: 30, price: 1500 },
-  { id: 12, name: "Follow-up Consultation", category: "Consultation", durationMinutes: 20, price: 800 },
+  // Facials
+  { id: 1,  name: "Timeless Facial",          category: "Facial",  durationMinutes: 60, price: 3500 },
+  { id: 2,  name: "Hydrafacial",               category: "Facial",  durationMinutes: 75, price: 6500 },
+  { id: 3,  name: "Peptide Facial",            category: "Facial",  durationMinutes: 60, price: 4500 },
+  { id: 4,  name: "Acne Treatment Facial",     category: "Facial",  durationMinutes: 60, price: 4000 },
+  { id: 5,  name: "Glow Fusion Facial",        category: "Facial",  durationMinutes: 60, price: 4500 },
+  { id: 6,  name: "Chemical Peel",             category: "Facial",  durationMinutes: 45, price: 3800 },
+  { id: 7,  name: "Deep Treatment Facial",     category: "Facial",  durationMinutes: 75, price: 5000 },
+  { id: 8,  name: "Microneedling",             category: "Facial",  durationMinutes: 60, price: 7000 },
+  { id: 9,  name: "PRP Microneedling",         category: "Facial",  durationMinutes: 90, price: 12000 },
+  { id: 10, name: "Dermaplaning",              category: "Facial",  durationMinutes: 45, price: 3500 },
+  { id: 11, name: "Mesotherapy",               category: "Facial",  durationMinutes: 60, price: 8000 },
+  { id: 12, name: "Royal Facial",              category: "Facial",  durationMinutes: 90, price: 6000 },
+  { id: 13, name: "Teen Acne Treatment",       category: "Facial",  durationMinutes: 45, price: 2500 },
+  { id: 14, name: "Adult Acne Treatment",      category: "Facial",  durationMinutes: 60, price: 4000 },
+  // Massages
+  { id: 15, name: "Reflexology Massage",       category: "Massage", durationMinutes: 60, price: 3000 },
+  { id: 16, name: "Sports Massage",            category: "Massage", durationMinutes: 60, price: 3500 },
+  { id: 17, name: "Deep Tissue Massage",       category: "Massage", durationMinutes: 60, price: 3500 },
+  { id: 18, name: "Swedish Massage",           category: "Massage", durationMinutes: 60, price: 3000 },
+  // Waxing
+  { id: 19, name: "Underarms Waxing",          category: "Waxing",  durationMinutes: 20, price: 800 },
+  { id: 20, name: "Chin Waxing",               category: "Waxing",  durationMinutes: 15, price: 600 },
+  { id: 21, name: "Leg Waxing",                category: "Waxing",  durationMinutes: 45, price: 2500 },
+  { id: 22, name: "Chest Waxing",              category: "Waxing",  durationMinutes: 30, price: 1500 },
+  { id: 23, name: "Back Waxing",               category: "Waxing",  durationMinutes: 30, price: 1500 },
+  { id: 24, name: "Manzilian",                 category: "Waxing",  durationMinutes: 45, price: 3000 },
+  { id: 25, name: "Bikini Waxing",             category: "Waxing",  durationMinutes: 30, price: 1800 },
+  { id: 26, name: "Brazilian Waxing",          category: "Waxing",  durationMinutes: 30, price: 2200 },
 ];
 
 const categoryIcons: Record<string, string> = {
   Facial: "ph:drop-light",
-  Laser: "ph:lightning-light",
-  Body: "ph:sparkle-light",
-  Consultation: "ph:stethoscope-light",
+  Massage: "ph:hand-heart-light",
+  Waxing: "ph:sparkle-light",
   All: "ph:squares-four-light",
 };
 
