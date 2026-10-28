@@ -6,8 +6,8 @@ import Link from "next/link";
 import Header from "@/components/layout/Header";
 import Card from "@/components/ui/Card";
 import { getBookingState, clearBookingState } from "@/lib/booking-store";
-import { CheckCircle, Calendar, Clock, MapPin, MessageSquare } from "lucide-react";
-import { format } from "date-fns";
+import { CheckCircle, Calendar, Clock, MapPin, MessageSquare, CalendarPlus } from "lucide-react";
+import { format, addMinutes } from "date-fns";
 
 export default function ConfirmPage() {
   const router = useRouter();
@@ -51,6 +51,22 @@ export default function ConfirmPage() {
 
   const totalPrice = state.cart.reduce((s, i) => s + i.price, 0);
   const totalDuration = state.cart.reduce((s, i) => s + i.durationMinutes, 0);
+
+  const calendarUrl = (() => {
+    if (!state.selectedDate || !state.selectedTime) return null;
+    const start = new Date(`${state.selectedDate.slice(0, 10)}T${state.selectedTime}:00`);
+    const end = addMinutes(start, totalDuration || 60);
+    const fmt = (d: Date) => d.toISOString().replace(/[-:]/g, "").slice(0, 15) + "Z";
+    const services = state.cart.map((c) => c.name).join(", ");
+    const params = new URLSearchParams({
+      action: "TEMPLATE",
+      text: `Vitapharm: ${services}`,
+      dates: `${fmt(start)}/${fmt(end)}`,
+      details: `Vitapharm Beauty & Health appointment.\nServices: ${services}\nTotal due on arrival: KES ${totalPrice.toLocaleString()}`,
+      location: "Vitapharm Clinic, Nairobi",
+    });
+    return `https://calendar.google.com/calendar/render?${params.toString()}`;
+  })();
 
   return (
     <div style={{ minHeight: "100vh" }}>
@@ -145,6 +161,17 @@ export default function ConfirmPage() {
           <Link href="/portal" className="btn-primary" style={{ fontSize: 15, padding: "12px 28px" }}>
             View in my portal
           </Link>
+          {calendarUrl && (
+            <a
+              href={calendarUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-secondary"
+              style={{ fontSize: 15, padding: "12px 28px", display: "flex", alignItems: "center", gap: 8 }}
+            >
+              <CalendarPlus size={16} /> Add to calendar
+            </a>
+          )}
           <Link href="/book" className="btn-secondary" style={{ fontSize: 15, padding: "12px 28px" }}>
             Book another service
           </Link>
