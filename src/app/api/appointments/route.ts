@@ -3,7 +3,23 @@ import { db } from "@/lib/db";
 import { appointments, appointmentServices, users } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
-import { parseISO, addMinutes } from "date-fns";
+import { parseISO, addMinutes, format } from "date-fns";
+
+async function sendSms(phone: string, message: string) {
+  const apiKey = process.env.TILIL_API_KEY;
+  if (!apiKey) { console.log(`[DEV] SMS to ${phone}: ${message}`); return; }
+  const endpoint = process.env.SMS_ENDPOINT || "https://api.tililtech.com/sms/v3/sendsms";
+  const shortcode = process.env.TILIL_SHORTCODE || "VITAPHARM";
+  try {
+    await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ api_key: apiKey, mobile: phone, message, shortcode }),
+    });
+  } catch (e) {
+    console.error("Confirmation SMS failed:", e);
+  }
+}
 
 const createSchema = z.object({
   phone: z.string().regex(/^\+254\d{9}$/),
@@ -63,6 +79,12 @@ export async function POST(req: NextRequest) {
         price: s.price.toFixed(2),
       }))
     );
+
+    // Send confirmation SMS
+    const serviceNames = data.services.map((s) => s.name).join(", ");
+    const dateStr = format(scheduledAt, "EEEE, MMM d 'at' h:mm a");
+    const confirmMsg = `Hi ${data.firstName || "there"}, your Vitapharm booking is confirmed!\n\n${serviceNames}\n${dateStr}\n\nPayment of KES ${totalAmount.toLocaleString()} is due on arrival. See you soon!`;
+    sendSms(data.phone, confirmMsg);
 
     return NextResponse.json({ success: true, appointmentId: appointment.id }, { status: 201 });
   } catch (err) {
