@@ -21,6 +21,18 @@ async function sendSms(phone: string, message: string) {
   }
 }
 
+async function notifyAdminWhatsApp(message: string) {
+  const apiKey = process.env.CALLMEBOT_API_KEY;
+  const adminPhone = process.env.ADMIN_WHATSAPP || "254758190230";
+  if (!apiKey) { console.log(`[DEV] WhatsApp admin notify: ${message}`); return; }
+  try {
+    const url = `https://api.callmebot.com/whatsapp.php?phone=${adminPhone}&text=${encodeURIComponent(message)}&apikey=${apiKey}`;
+    await fetch(url);
+  } catch (e) {
+    console.error("Admin WhatsApp notify failed:", e);
+  }
+}
+
 const createSchema = z.object({
   phone: z.string().regex(/^\+254\d{9}$/),
   firstName: z.string().min(1).max(100).optional(),
@@ -80,11 +92,16 @@ export async function POST(req: NextRequest) {
       }))
     );
 
-    // Send confirmation SMS
+    // Send confirmation SMS to client
     const serviceNames = data.services.map((s) => s.name).join(", ");
     const dateStr = format(scheduledAt, "EEEE, MMM d 'at' h:mm a");
     const confirmMsg = `Hi ${data.firstName || "there"}, your Vitapharm booking is confirmed!\n\n${serviceNames}\n${dateStr}\n\nPayment of KES ${totalAmount.toLocaleString()} is due on arrival. See you soon!`;
     sendSms(data.phone, confirmMsg);
+
+    // Notify admin via WhatsApp
+    const clientName = [data.firstName, data.lastName].filter(Boolean).join(" ") || data.phone;
+    const adminMsg = `New booking at Vitapharm!\n\nClient: ${clientName}\nPhone: ${data.phone}\nService: ${serviceNames}\nDate: ${dateStr}\nAmount: KES ${totalAmount.toLocaleString()}`;
+    notifyAdminWhatsApp(adminMsg);
 
     return NextResponse.json({ success: true, appointmentId: appointment.id }, { status: 201 });
   } catch (err) {
