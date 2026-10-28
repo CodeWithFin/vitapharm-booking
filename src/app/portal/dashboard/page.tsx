@@ -6,12 +6,13 @@ import Link from "next/link";
 import Header from "@/components/layout/Header";
 import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
-import { Calendar, ClipboardList, Clock, BookOpen } from "lucide-react";
-import { format, parseISO, isPast } from "date-fns";
+import { Calendar, ClipboardList, Clock, CalendarPlus } from "lucide-react";
+import { format, parseISO, isPast, addMinutes } from "date-fns";
 
 interface Appointment {
   id: number;
   scheduledAt: string;
+  endsAt: string | null;
   status: string;
   totalAmount: string;
   serviceNames: string[];
@@ -50,6 +51,21 @@ export default function PortalDashboard() {
   const past = appointments.filter(
     (a) => isPast(parseISO(a.scheduledAt)) || a.status === "completed" || a.status === "no_show"
   );
+
+  const calendarUrl = (appt: Appointment) => {
+    const start = parseISO(appt.scheduledAt);
+    const end = appt.endsAt ? parseISO(appt.endsAt) : addMinutes(start, 60);
+    const fmt = (d: Date) => d.toISOString().replace(/[-:]/g, "").slice(0, 15) + "Z";
+    const services = appt.serviceNames.join(", ");
+    const params = new URLSearchParams({
+      action: "TEMPLATE",
+      text: `Vitapharm: ${services}`,
+      dates: `${fmt(start)}/${fmt(end)}`,
+      details: `Vitapharm Beauty & Health appointment.\nRef: VP-${String(appt.id).padStart(6, "0")}\nServices: ${services}\nTotal due on arrival: KES ${Number(appt.totalAmount).toLocaleString()}`,
+      location: "Vitapharm Clinic, Nairobi",
+    });
+    return `https://calendar.google.com/calendar/render?${params.toString()}`;
+  };
 
   const initials = user
     ? `${user.firstName?.[0] ?? ""}${user.lastName?.[0] ?? ""}`.toUpperCase() || user.phone.slice(-2)
@@ -106,7 +122,7 @@ export default function PortalDashboard() {
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
               {upcoming.map((appt) => (
                 <Card key={appt.id} padding="md">
-                  <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
+                  <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, marginBottom: 14 }}>
                     <div>
                       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6, flexWrap: "wrap" }}>
                         <Badge color="green">Confirmed</Badge>
@@ -124,6 +140,20 @@ export default function PortalDashboard() {
                       <p style={{ fontSize: "var(--text-caption)", color: "var(--color-slate)" }}>Pay on arrival</p>
                     </div>
                   </div>
+                  <a
+                    href={calendarUrl(appt)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: "inline-flex", alignItems: "center", gap: 6,
+                      fontSize: "var(--text-caption)", fontWeight: 500,
+                      color: "var(--color-ink)", textDecoration: "none",
+                      border: "1px solid var(--color-silver)", borderRadius: 8,
+                      padding: "6px 12px", background: "var(--color-paper)",
+                    }}
+                  >
+                    <CalendarPlus size={13} /> Add to calendar
+                  </a>
                 </Card>
               ))}
             </div>
