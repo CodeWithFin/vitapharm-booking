@@ -179,7 +179,7 @@ export default function SchedulePage() {
             {selectedDate && (
               <Card padding="md">
                 <h3 style={{ fontSize: "var(--text-heading-sm)", fontWeight: 600, marginBottom: 16 }}>
-                  Available times — {format(selectedDate, "EEEE, MMMM d")}
+                  Available times for {format(selectedDate, "EEEE, MMMM d")}
                 </h3>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(80px, 1fr))", gap: 8 }}>
                   {TIME_SLOTS.map((slot) => {

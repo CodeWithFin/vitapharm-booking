@@ -17,7 +17,7 @@ const PAST = [
 ];
 
 const PACKAGES = [
-  { name: "Laser Hair Removal — Body", used: 3, total: 6, nextDate: "Nov 1, 2026" },
+  { name: "Laser Hair Removal (Body)", used: 3, total: 6, nextDate: "Nov 1, 2026" },
   { name: "Chemical Peel Series", used: 1, total: 4, nextDate: "Nov 15, 2026" },
 ];
 

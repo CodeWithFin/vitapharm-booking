@@ -67,7 +67,7 @@ export default function ConfirmPage() {
                   <Clock size={16} color="var(--color-graphite)" />
                 </div>
                 <div>
-                  <p style={{ fontSize: "var(--text-body-sm)", fontWeight: 500 }}>{state.selectedTime} — {totalDuration} min total</p>
+                  <p style={{ fontSize: "var(--text-body-sm)", fontWeight: 500 }}>{state.selectedTime}, {totalDuration} min total</p>
                   <p style={{ fontSize: "var(--text-caption)", color: "var(--color-slate)" }}>Time</p>
                 </div>
               </div>
@@ -78,7 +78,7 @@ export default function ConfirmPage() {
               </div>
               <div>
                 <p style={{ fontSize: "var(--text-body-sm)", fontWeight: 500 }}>Vitapharm Clinic, Nairobi</p>
-                <p style={{ fontSize: "var(--text-caption)", color: "var(--color-slate)" }}>Location — full address in your SMS</p>
+                <p style={{ fontSize: "var(--text-caption)", color: "var(--color-slate)" }}>Location: full address in your SMS</p>
               </div>
             </div>
           </div>

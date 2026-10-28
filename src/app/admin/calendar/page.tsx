@@ -79,7 +79,7 @@ export default function AdminCalendar() {
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
             <h1 style={{ fontSize: "var(--text-heading)", fontWeight: 600 }}>
-              {weekStart ? `Week of ${format(weekStart, "MMM d")} — ${format(addDays(weekStart, 4), "MMM d, yyyy")}` : "Loading…"}
+              {weekStart ? `Week of ${format(weekStart, "MMM d")} to ${format(addDays(weekStart, 4), "MMM d, yyyy")}` : "Loading..."}
             </h1>
             <div style={{ display: "flex", gap: 4 }}>
               <button onClick={() => weekStart && setWeekStart(addDays(weekStart, -7))} style={{ width: 32, height: 32, borderRadius: 8, border: "1px solid var(--color-silver)", background: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>

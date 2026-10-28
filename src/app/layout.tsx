@@ -18,7 +18,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "Vitapharm | Book Your Treatment",
-  description: "Book aesthetic and clinical spa treatments at Vitapharm. Facials, laser, and more — pay on arrival.",
+  description: "Book aesthetic and clinical spa treatments at Vitapharm. Facials, laser, and more. Pay on arrival.",
 };
 
 export default function RootLayout({

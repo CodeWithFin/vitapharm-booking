@@ -84,7 +84,7 @@ export default function PortalLoginPage() {
             </h1>
             <p style={{ fontSize: "var(--text-body-sm)", color: "var(--color-slate)" }}>
               {step === "phone"
-                ? "No password needed — we'll verify you via SMS"
+                ? "No password needed. We'll verify you via SMS"
                 : `We sent a 6-digit code to +254${phone.replace(/^0/, "")}`}
             </p>
           </div>

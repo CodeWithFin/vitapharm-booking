@@ -18,7 +18,7 @@ const features = [
   {
     icon: Zap,
     title: "Book in under 2 minutes",
-    body: "Our cart-style booking lets you select multiple treatments, pick your therapist, and confirm — no accounts needed.",
+    body: "Our cart-style booking lets you select multiple treatments, pick your therapist, and confirm. No accounts needed.",
   },
   {
     icon: Shield,
@@ -69,7 +69,7 @@ export default function HomePage() {
                 The smarter way to book your skin treatment
               </h1>
               <p style={{ fontSize: "var(--text-subheading)", color: "var(--color-slate)", lineHeight: 1.5, marginBottom: 40, maxWidth: 480 }}>
-                Select your services, choose your therapist, and lock in your slot — all in one seamless flow. Pay when you arrive.
+                Select your services, choose your therapist, and lock in your slot. All in one seamless flow. Pay when you arrive.
               </p>
               <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
                 <Link href="/book" className="btn-primary" style={{ fontSize: 16, padding: "14px 32px" }}>
@@ -189,7 +189,7 @@ export default function HomePage() {
               Treatments for every skin goal
             </h2>
             <p style={{ fontSize: "var(--text-subheading)", color: "var(--color-slate)", maxWidth: 520, margin: "0 auto" }}>
-              From clinical peels to advanced laser — every service is delivered by certified specialists in equipped treatment rooms.
+              From clinical peels to advanced laser. Every service is delivered by certified specialists in equipped treatment rooms.
             </p>
           </div>
 
@@ -281,7 +281,7 @@ export default function HomePage() {
               Your skin deserves expert care
             </h2>
             <p style={{ fontSize: "var(--text-subheading)", color: "rgba(255,255,255,0.65)", marginBottom: 32, maxWidth: 480, margin: "0 auto 32px" }}>
-              Book today, pay on arrival. No hidden fees, no pressure — just results.
+              Book today, pay on arrival. No hidden fees, no pressure. Just results.
             </p>
             <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
               <Link href="/book" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 32px", background: "white", color: "var(--color-ink)", borderRadius: "9999px", fontWeight: 500, fontSize: 16, textDecoration: "none" }}>

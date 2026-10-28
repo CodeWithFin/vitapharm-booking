@@ -10,8 +10,8 @@ const CLIENTS = [
   { id: 1, name: "Amara Osei", phone: "+254712345678", visits: 12, lastVisit: "Oct 15, 2026", spent: 58400, strikes: 0, isBlocked: false, fitzpatrick: "IV", notes: "Sensitive to retinoids. Prefers morning slots." },
   { id: 2, name: "Naledi Dlamini", phone: "+254723456789", visits: 8, lastVisit: "Oct 20, 2026", spent: 41200, strikes: 1, isBlocked: false, fitzpatrick: "V", notes: "" },
   { id: 3, name: "Grace Mutua", phone: "+254734567890", visits: 3, lastVisit: "Oct 22, 2026", spent: 14700, strikes: 0, isBlocked: false, fitzpatrick: "III", notes: "" },
-  { id: 4, name: "Keisha Mensah", phone: "+254745678901", visits: 1, lastVisit: "Oct 1, 2026", spent: 4500, strikes: 2, isBlocked: true, fitzpatrick: "VI", notes: "2 no-shows — auto-restricted." },
-  { id: 5, name: "Zara Ahmed", phone: "+254756789012", visits: 5, lastVisit: "Sep 30, 2026", spent: 27500, strikes: 0, isBlocked: false, fitzpatrick: "II", notes: "Keloid risk — avoid ablative treatments." },
+  { id: 4, name: "Keisha Mensah", phone: "+254745678901", visits: 1, lastVisit: "Oct 1, 2026", spent: 4500, strikes: 2, isBlocked: true, fitzpatrick: "VI", notes: "2 no-shows, auto-restricted." },
+  { id: 5, name: "Zara Ahmed", phone: "+254756789012", visits: 5, lastVisit: "Sep 30, 2026", spent: 27500, strikes: 0, isBlocked: false, fitzpatrick: "II", notes: "Keloid risk: avoid ablative treatments." },
   { id: 6, name: "Priya Nair", phone: "+254767890123", visits: 7, lastVisit: "Oct 18, 2026", spent: 33200, strikes: 0, isBlocked: false, fitzpatrick: "IV", notes: "" },
 ];
 
@@ -146,7 +146,7 @@ export default function AdminClients() {
                     { label: "Total visits", value: selected.visits.toString(), icon: Calendar },
                     { label: "Lifetime spend", value: `KES ${selected.spent.toLocaleString()}`, icon: User },
                     { label: "Fitzpatrick type", value: selected.fitzpatrick || "Not recorded", icon: User },
-                    { label: "Strike count", value: `${selected.strikes}/2${selected.isBlocked ? " — RESTRICTED" : ""}`, icon: AlertTriangle },
+                    { label: "Strike count", value: `${selected.strikes}/2${selected.isBlocked ? " (restricted)" : ""}`, icon: AlertTriangle },
                   ].map(({ label, value, icon: Icon }) => (
                     <div key={label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingBottom: 10, borderBottom: "1px solid var(--color-silver)" }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
