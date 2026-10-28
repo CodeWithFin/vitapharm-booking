@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
 
   let cancelledCount = 0;
   if (microdermIds.length > 0) {
-    const apptRows = await db.select({ id: appointmentServices.appointmentId })
+    const apptRows = await db.select({ appointmentId: appointmentServices.appointmentId })
       .from(appointmentServices).where(inArray(appointmentServices.serviceId, microdermIds));
     const apptIds = [...new Set(apptRows.map(r => r.appointmentId))];
     if (apptIds.length > 0) {
