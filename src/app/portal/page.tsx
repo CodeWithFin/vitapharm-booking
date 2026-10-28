@@ -55,13 +55,21 @@ export default function PortalLoginPage() {
   };
 
   const handleOtpInput = (index: number, value: string) => {
+    // Handle paste / iOS auto-fill putting all 6 digits into one input
+    const digits = value.replace(/\D/g, "").slice(0, 6);
+    if (digits.length > 1) {
+      const next = ["", "", "", "", "", ""];
+      digits.split("").forEach((d, i) => { next[i] = d; });
+      setOtp(next);
+      document.getElementById(`otp-${Math.min(digits.length - 1, 5)}`)?.focus();
+      return;
+    }
     if (!/^\d?$/.test(value)) return;
     const next = [...otp];
     next[index] = value;
     setOtp(next);
     if (value && index < 5) {
-      const nextInput = document.getElementById(`otp-${index + 1}`);
-      nextInput?.focus();
+      document.getElementById(`otp-${index + 1}`)?.focus();
     }
   };
 
@@ -124,8 +132,9 @@ export default function PortalLoginPage() {
                       value={digit}
                       onChange={(e) => handleOtpInput(i, e.target.value)}
                       onKeyDown={(e) => handleOtpKey(i, e)}
-                      maxLength={1}
+                      maxLength={6}
                       inputMode="numeric"
+                      autoComplete={i === 0 ? "one-time-code" : "off"}
                       style={{
                         width: 52, height: 60,
                         textAlign: "center",

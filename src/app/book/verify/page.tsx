@@ -58,6 +58,15 @@ export default function VerifyPage() {
   };
 
   const handleOtpInput = (index: number, value: string) => {
+    // Handle paste / iOS auto-fill putting all 6 digits into one input
+    const digits = value.replace(/\D/g, "").slice(0, 6);
+    if (digits.length > 1) {
+      const next = ["", "", "", "", "", ""];
+      digits.split("").forEach((d, i) => { next[i] = d; });
+      setOtp(next);
+      inputRefs.current[Math.min(digits.length - 1, 5)]?.focus();
+      return;
+    }
     if (!/^\d?$/.test(value)) return;
     const next = [...otp];
     next[index] = value;
@@ -169,7 +178,8 @@ export default function VerifyPage() {
                         value={digit}
                         onChange={(e) => handleOtpInput(i, e.target.value)}
                         onKeyDown={(e) => handleOtpKeyDown(i, e)}
-                        maxLength={1}
+                        maxLength={6}
+                        autoComplete={i === 0 ? "one-time-code" : "off"}
                         style={{
                           width: 52, height: 60,
                           textAlign: "center",
