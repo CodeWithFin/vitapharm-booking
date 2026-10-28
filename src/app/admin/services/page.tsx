@@ -39,8 +39,6 @@ export default function AdminServices() {
     setServices((prev) => prev.map((s) => s.id === id ? { ...s, active: !s.active } : s));
   };
 
-  const totalRevenue30d = services.filter(s => s.active).reduce((sum, s) => sum + s.price * s.bookings30d, 0);
-
   return (
     <div style={{ minHeight: "100vh" }}>
       <AdminNav active="Services" />
@@ -50,7 +48,7 @@ export default function AdminServices() {
           <div>
             <h1 style={{ fontSize: "var(--text-heading)", fontWeight: 600, marginBottom: 4 }}>Services</h1>
             <p style={{ fontSize: "var(--text-body-sm)", color: "var(--color-slate)" }}>
-              {services.filter(s => s.active).length} active · KES {totalRevenue30d.toLocaleString()} revenue (30d)
+              {services.filter(s => s.active).length} active
             </p>
           </div>
           <button className="btn-primary btn-rect" style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13 }}>
@@ -95,18 +93,6 @@ export default function AdminServices() {
                       <DollarSign size={11} />KES {service.price.toLocaleString()}
                     </span>
                   </div>
-                </div>
-
-                <div style={{ textAlign: "center", minWidth: 80 }}>
-                  <p style={{ fontFamily: "var(--font-heading)", fontSize: 20, fontWeight: 600, lineHeight: 1.1 }}>{service.bookings30d}</p>
-                  <p style={{ fontSize: "var(--text-caption)", color: "var(--color-slate)" }}>bookings/30d</p>
-                </div>
-
-                <div style={{ textAlign: "right", minWidth: 100 }}>
-                  <p style={{ fontSize: "var(--text-body-sm)", fontWeight: 700, marginBottom: 2 }}>
-                    KES {(service.price * service.bookings30d).toLocaleString()}
-                  </p>
-                  <p style={{ fontSize: "var(--text-caption)", color: "var(--color-slate)" }}>30d revenue</p>
                 </div>
 
                 <div style={{ display: "flex", gap: 8 }}>
