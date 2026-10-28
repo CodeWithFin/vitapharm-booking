@@ -54,7 +54,8 @@ export default function SchedulePage() {
     const state = getBookingState();
     setBookingState({
       ...state,
-      selectedDate: selectedDate.toISOString(),
+      // Store as local YYYY-MM-DD to avoid UTC midnight rollback
+      selectedDate: `${selectedDate.getFullYear()}-${String(selectedDate.getMonth()+1).padStart(2,"0")}-${String(selectedDate.getDate()).padStart(2,"0")}`,
       selectedTime,
       therapistId: selectedTherapist,
     });
