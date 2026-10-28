@@ -26,6 +26,7 @@ interface Appt {
   status: string;
   totalAmount: number;
   clientName: string;
+  clientPhone: string | null;
   serviceNames: string[];
 }
 
@@ -151,9 +152,14 @@ export default function AdminCalendar() {
             <div style={{ position: "sticky", top: 80 }}>
               <Card padding="md">
                 <p style={{ fontSize: "var(--text-body-sm)", fontWeight: 600, marginBottom: 4 }}>{selected.clientName}</p>
-                <p style={{ fontSize: "var(--text-caption)", color: "var(--color-slate)", marginBottom: 4 }}>
+                <p style={{ fontSize: "var(--text-caption)", color: "var(--color-slate)", marginBottom: 2 }}>
                   {format(parseISO(selected.scheduledAt), "EEE, MMM d 'at' h:mm a")}
                 </p>
+                {selected.clientPhone && (
+                  <p style={{ fontSize: "var(--text-caption)", color: "var(--color-ink)", marginBottom: 4, fontWeight: 500 }}>
+                    {selected.clientPhone}
+                  </p>
+                )}
                 <p style={{ fontSize: "var(--text-caption)", color: "var(--color-slate)", marginBottom: 16 }}>
                   {selected.serviceNames.join(", ")}
                 </p>

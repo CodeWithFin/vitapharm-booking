@@ -53,6 +53,7 @@ export async function GET(req: NextRequest) {
         status: a.status,
         totalAmount: Number(a.totalAmount),
         clientName: [a.clientFirstName, a.clientLastName].filter(Boolean).join(" ") || a.clientPhone || "Unknown",
+        clientPhone: a.clientPhone || null,
         serviceNames: rows.map((r) => r.name),
       };
     })
