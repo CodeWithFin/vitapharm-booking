@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
-import { Menu, X, Leaf } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 const navLinks = [
   { label: "Services", href: "/book" },
@@ -25,13 +26,15 @@ export default function Header() {
       }}
     >
       <div className="container" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 64 }}>
-        <Link href="/" style={{ display: "flex", alignItems: "center", gap: 8, textDecoration: "none" }}>
-          <div style={{ width: 32, height: 32, background: "var(--color-ink)", borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <Leaf size={16} color="white" />
-          </div>
-          <span style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: 18, color: "var(--color-graphite)", letterSpacing: "0.2px" }}>
-            Vitapharm
-          </span>
+        <Link href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
+          <Image
+            src="/logo/vitapharm-logo.png"
+            alt="Vitapharm"
+            width={140}
+            height={54}
+            style={{ objectFit: "contain", height: 40, width: "auto" }}
+            priority
+          />
         </Link>
 
         <nav style={{ display: "flex", alignItems: "center", gap: 32 }} className="hidden-mobile">
