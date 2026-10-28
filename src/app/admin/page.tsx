@@ -5,7 +5,7 @@ import Link from "next/link";
 import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
 import AdminNav from "@/components/admin/AdminNav";
-import { TrendingUp, Users, Calendar, DollarSign, AlertCircle, ChevronRight, CheckCircle, Clock, XCircle } from "lucide-react";
+import { TrendingUp, Users, Calendar, AlertCircle, ChevronRight, CheckCircle, Clock, XCircle } from "lucide-react";
 import { format, parseISO } from "date-fns";
 
 interface Stats {
@@ -80,7 +80,6 @@ export default function AdminDashboard() {
         {/* Stats */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 16, marginBottom: 32 }}>
           {[
-            { label: "Revenue today", value: loading ? "…" : `KES ${(stats?.todayRevenue ?? 0).toLocaleString()}`, icon: DollarSign, color: "#16a34a" },
             { label: "Appointments today", value: loading ? "…" : String(stats?.todayCount ?? 0), icon: Calendar, color: "var(--color-ink)" },
             { label: "Total clients", value: loading ? "…" : (stats?.totalClients ?? 0).toLocaleString(), icon: Users, color: "var(--color-graphite)" },
             { label: "No-shows (30d)", value: loading ? "…" : String(stats?.noShows30d ?? 0), icon: AlertCircle, color: "#ea580c" },
