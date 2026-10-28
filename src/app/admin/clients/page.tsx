@@ -103,10 +103,6 @@ export default function AdminClients() {
                           {client.phone} · {client.visits} visit{client.visits !== 1 ? "s" : ""}{client.lastVisit ? ` · Last: ${format(parseISO(client.lastVisit), "MMM d, yyyy")}` : ""}
                         </p>
                       </div>
-                      <div style={{ textAlign: "right" }}>
-                        <p style={{ fontSize: "var(--text-body-sm)", fontWeight: 600 }}>KES {client.spent.toLocaleString()}</p>
-                        <p style={{ fontSize: "var(--text-caption)", color: selected?.id === client.id ? "rgba(255,255,255,0.7)" : "var(--color-slate)" }}>lifetime</p>
-                      </div>
                       <ChevronRight size={14} color={selected?.id === client.id ? "rgba(255,255,255,0.6)" : "var(--color-stone)"} />
                     </div>
                   ))}
@@ -130,7 +126,6 @@ export default function AdminClients() {
                   <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 16 }}>
                     {[
                       { label: "Total visits", value: String(selected.visits), icon: Calendar },
-                      { label: "Lifetime spend", value: `KES ${selected.spent.toLocaleString()}`, icon: User },
                       { label: "Last visit", value: selected.lastVisit ? format(parseISO(selected.lastVisit), "MMM d, yyyy") : "None", icon: Phone },
                       { label: "Status", value: selected.isBlocked ? "Restricted" : "Active", icon: User },
                     ].map(({ label, value, icon: Icon }) => (
