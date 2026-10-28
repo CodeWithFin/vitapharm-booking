@@ -50,11 +50,15 @@ const CATEGORY_COLORS: Record<string, "default" | "blue" | "green" | "orange"> =
 
 interface Service { id: number; name: string; category: string; duration: number; price: number; active: boolean; }
 
+const EMPTY_NEW = { name: "", category: "Facial", duration: "60", price: "" };
+
 export default function AdminServices() {
   const [services, setServices] = useState<Service[]>(SERVICES);
   const [activeCategory, setActiveCategory] = useState("All");
   const [editing, setEditing] = useState<number | null>(null);
   const [draft, setDraft] = useState<{ name: string; price: string }>({ name: "", price: "" });
+  const [adding, setAdding] = useState(false);
+  const [newSvc, setNewSvc] = useState(EMPTY_NEW);
 
   const categories = ["All", ...Array.from(new Set(SERVICES.map((s) => s.category)))];
   const filtered = services.filter((s) => activeCategory === "All" || s.category === activeCategory);
@@ -73,6 +77,16 @@ export default function AdminServices() {
 
   const cancelEdit = () => setEditing(null);
 
+  const addService = () => {
+    const price = parseInt(newSvc.price.replace(/\D/g, ""), 10);
+    const duration = parseInt(newSvc.duration, 10);
+    if (!newSvc.name.trim() || isNaN(price) || isNaN(duration)) return;
+    const newId = Math.max(...services.map((s) => s.id)) + 1;
+    setServices((prev) => [...prev, { id: newId, name: newSvc.name.trim(), category: newSvc.category, duration, price, active: true }]);
+    setNewSvc(EMPTY_NEW);
+    setAdding(false);
+  };
+
   const toggleActive = (id: number) => {
     setServices((prev) => prev.map((s) => s.id === id ? { ...s, active: !s.active } : s));
   };
@@ -89,7 +103,7 @@ export default function AdminServices() {
               {services.filter(s => s.active).length} active
             </p>
           </div>
-          <button className="btn-primary btn-rect" style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13 }}>
+          <button onClick={() => { setAdding(true); setEditing(null); }} className="btn-primary btn-rect" style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13 }}>
             <Plus size={14} /> Add service
           </button>
         </div>
@@ -106,6 +120,62 @@ export default function AdminServices() {
             </button>
           ))}
         </div>
+
+        {adding && (
+          <Card padding="md" style={{ marginBottom: 16, border: "1.5px solid var(--color-ink)" }}>
+            <p style={{ fontSize: "var(--text-body-sm)", fontWeight: 600, marginBottom: 12 }}>New service</p>
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "flex-end" }}>
+              <div style={{ flex: 2, minWidth: 160 }}>
+                <label style={{ fontSize: "var(--text-caption)", color: "var(--color-slate)", display: "block", marginBottom: 4 }}>Name</label>
+                <input
+                  value={newSvc.name}
+                  onChange={(e) => setNewSvc((n) => ({ ...n, name: e.target.value }))}
+                  placeholder="Service name"
+                  autoFocus
+                  style={{ width: "100%", fontSize: "var(--text-body-sm)", padding: "7px 10px", borderRadius: 8, border: "1px solid var(--color-silver)", fontFamily: "var(--font-body)" }}
+                  onKeyDown={(e) => { if (e.key === "Enter") addService(); if (e.key === "Escape") setAdding(false); }}
+                />
+              </div>
+              <div style={{ minWidth: 130 }}>
+                <label style={{ fontSize: "var(--text-caption)", color: "var(--color-slate)", display: "block", marginBottom: 4 }}>Category</label>
+                <select
+                  value={newSvc.category}
+                  onChange={(e) => setNewSvc((n) => ({ ...n, category: e.target.value }))}
+                  style={{ width: "100%", fontSize: "var(--text-body-sm)", padding: "7px 10px", borderRadius: 8, border: "1px solid var(--color-silver)", fontFamily: "var(--font-body)", background: "white" }}
+                >
+                  {["Facial", "Massage", "Waxing", "Consultation"].map((c) => <option key={c}>{c}</option>)}
+                </select>
+              </div>
+              <div style={{ minWidth: 90 }}>
+                <label style={{ fontSize: "var(--text-caption)", color: "var(--color-slate)", display: "block", marginBottom: 4 }}>Duration (min)</label>
+                <input
+                  value={newSvc.duration}
+                  onChange={(e) => setNewSvc((n) => ({ ...n, duration: e.target.value }))}
+                  placeholder="60"
+                  style={{ width: "100%", fontSize: "var(--text-body-sm)", padding: "7px 10px", borderRadius: 8, border: "1px solid var(--color-silver)", fontFamily: "var(--font-body)" }}
+                />
+              </div>
+              <div style={{ minWidth: 110 }}>
+                <label style={{ fontSize: "var(--text-caption)", color: "var(--color-slate)", display: "block", marginBottom: 4 }}>Price (KES)</label>
+                <input
+                  value={newSvc.price}
+                  onChange={(e) => setNewSvc((n) => ({ ...n, price: e.target.value }))}
+                  placeholder="5000"
+                  style={{ width: "100%", fontSize: "var(--text-body-sm)", padding: "7px 10px", borderRadius: 8, border: "1px solid var(--color-silver)", fontFamily: "var(--font-body)" }}
+                  onKeyDown={(e) => { if (e.key === "Enter") addService(); if (e.key === "Escape") setAdding(false); }}
+                />
+              </div>
+              <div style={{ display: "flex", gap: 8 }}>
+                <button onClick={addService} className="btn-primary btn-rect" style={{ fontSize: 13, padding: "7px 16px" }}>
+                  Add
+                </button>
+                <button onClick={() => { setAdding(false); setNewSvc(EMPTY_NEW); }} style={{ fontSize: 13, padding: "7px 14px", border: "1px solid var(--color-silver)", borderRadius: 8, background: "white", cursor: "pointer", fontFamily: "var(--font-body)" }}>
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </Card>
+        )}
 
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
           {filtered.map((service) => (
