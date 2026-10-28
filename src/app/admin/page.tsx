@@ -36,8 +36,9 @@ export default function AdminDashboard() {
   const [stats, setStats] = useState<Stats | null>(null);
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [loading, setLoading] = useState(true);
+  const [updating, setUpdating] = useState<number | null>(null);
 
-  useEffect(() => {
+  const loadData = () => {
     Promise.all([
       fetch("/api/admin/stats").then((r) => r.json()),
       fetch("/api/admin/today").then((r) => r.json()),
@@ -46,7 +47,20 @@ export default function AdminDashboard() {
       setAppointments(t.appointments ?? []);
       setLoading(false);
     }).catch(() => setLoading(false));
-  }, []);
+  };
+
+  useEffect(() => { loadData(); }, []);
+
+  const updateStatus = async (id: number, status: string) => {
+    setUpdating(id);
+    await fetch(`/api/admin/appointments/${id}/status`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status }),
+    });
+    loadData();
+    setUpdating(null);
+  };
 
   const today = new Date();
   const greeting = today.getHours() < 12 ? "Good morning" : today.getHours() < 17 ? "Good afternoon" : "Good evening";
@@ -117,10 +131,36 @@ export default function AdminDashboard() {
                             {appt.serviceNames.join(", ") || "—"}
                           </p>
                         </div>
-                        <div style={{ textAlign: "right" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
                           <p style={{ fontSize: "var(--text-body-sm)", fontWeight: 600 }}>
                             KES {appt.totalAmount.toLocaleString()}
                           </p>
+                          {appt.status === "confirmed" || appt.status === "pending" ? (
+                            <div style={{ display: "flex", gap: 6 }}>
+                              <button
+                                onClick={() => updateStatus(appt.id, "in_progress")}
+                                disabled={updating === appt.id}
+                                style={{ fontSize: 12, padding: "5px 10px", background: "var(--color-ink)", color: "white", border: "none", borderRadius: 6, cursor: "pointer", fontFamily: "var(--font-body)", whiteSpace: "nowrap" }}
+                              >
+                                Arrived
+                              </button>
+                              <button
+                                onClick={() => updateStatus(appt.id, "no_show")}
+                                disabled={updating === appt.id}
+                                style={{ fontSize: 12, padding: "5px 10px", background: "white", color: "#dc2626", border: "1px solid #fca5a5", borderRadius: 6, cursor: "pointer", fontFamily: "var(--font-body)" }}
+                              >
+                                No-show
+                              </button>
+                            </div>
+                          ) : appt.status === "in_progress" ? (
+                            <button
+                              onClick={() => updateStatus(appt.id, "completed")}
+                              disabled={updating === appt.id}
+                              style={{ fontSize: 12, padding: "5px 10px", background: "var(--color-ink)", color: "white", border: "none", borderRadius: 6, cursor: "pointer", fontFamily: "var(--font-body)", whiteSpace: "nowrap" }}
+                            >
+                              Complete
+                            </button>
+                          ) : null}
                         </div>
                       </div>
                     </Card>
