@@ -187,6 +187,7 @@ export default function AdminDashboard() {
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                 {[
+                  { label: "New booking", href: "/admin/new-booking" },
                   { label: "View calendar", href: "/admin/calendar" },
                   { label: "Client list", href: "/admin/clients" },
                   { label: "Manage services", href: "/admin/services" },
