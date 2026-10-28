@@ -76,7 +76,7 @@ export default function HomePage() {
                   Book your treatment <ArrowRight size={16} />
                 </Link>
                 <Link href="/portal" className="btn-secondary" style={{ fontSize: 16, padding: "14px 32px" }}>
-                  View my itinerary
+                  My bookings
                 </Link>
               </div>
               <div style={{ marginTop: 32, display: "flex", alignItems: "center", gap: 8 }}>
