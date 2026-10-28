@@ -13,12 +13,39 @@ export default function ConfirmPage() {
   const router = useRouter();
   const [bookingRef, setBookingRef] = useState("");
   const [state, setState] = useState(getBookingState());
+  const [apptError, setApptError] = useState("");
 
   useEffect(() => {
     setBookingRef(`VP-${Math.random().toString(36).slice(2, 8).toUpperCase()}`);
     const s = getBookingState();
     if (s.cart.length === 0 || !s.otpVerified) { router.push("/book"); return; }
     setState(s);
+
+    // Create the appointment and trigger confirmation SMS
+    const scheduledAt = s.selectedDate && s.selectedTime
+      ? new Date(`${s.selectedDate.slice(0, 10)}T${s.selectedTime}:00`).toISOString()
+      : null;
+
+    if (scheduledAt && s.phone) {
+      fetch("/api/appointments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          phone: s.phone,
+          firstName: s.firstName,
+          lastName: s.lastName,
+          therapistId: s.therapistId ?? undefined,
+          scheduledAt,
+          services: s.cart.map((c) => ({
+            id: c.id,
+            name: c.name,
+            durationMinutes: c.durationMinutes,
+            price: c.price,
+          })),
+        }),
+      }).catch(() => setApptError("Booking saved locally but confirmation SMS may be delayed."));
+    }
+
     clearBookingState();
   }, [router]);
 
@@ -31,8 +58,8 @@ export default function ConfirmPage() {
 
       <div className="container" style={{ paddingTop: 64, paddingBottom: 80, maxWidth: 640, textAlign: "center" }}>
         <div style={{ marginBottom: 32 }}>
-          <div style={{ width: 72, height: 72, background: "#f0fdf4", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 24px" }}>
-            <CheckCircle size={36} color="#16a34a" />
+          <div style={{ width: 72, height: 72, background: "rgba(139, 58, 0, 0.08)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 24px" }}>
+            <CheckCircle size={36} color="var(--color-ink)" />
           </div>
           <div className="tag" style={{ marginBottom: 16 }}>Booking confirmed</div>
           <h1 style={{ fontSize: "clamp(28px, 4vw, 40px)", fontWeight: 600, lineHeight: 1.2, letterSpacing: "0.3px", marginBottom: 12 }}>
@@ -46,7 +73,7 @@ export default function ConfirmPage() {
         <Card padding="md" style={{ textAlign: "left", marginBottom: 24 }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
             <h3 style={{ fontSize: "var(--text-heading-sm)", fontWeight: 600 }}>Booking details</h3>
-            <span className="tag" style={{ background: "#f0fdf4", color: "#16a34a" }}>{bookingRef}</span>
+            <span className="tag" style={{ background: "rgba(139, 58, 0, 0.08)", color: "var(--color-ink)" }}>{bookingRef}</span>
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
@@ -98,9 +125,9 @@ export default function ConfirmPage() {
           </div>
         </Card>
 
-        <Card padding="md" style={{ background: "var(--color-info-banner-bg)", marginBottom: 32, textAlign: "left" }}>
+        <Card padding="md" style={{ background: "rgba(139, 58, 0, 0.05)", border: "1px solid rgba(139, 58, 0, 0.15)", marginBottom: 32, textAlign: "left" }}>
           <div style={{ display: "flex", gap: 12 }}>
-            <MessageSquare size={18} color="var(--color-action-blue)" style={{ flexShrink: 0, marginTop: 2 }} />
+            <MessageSquare size={18} color="var(--color-ink)" style={{ flexShrink: 0, marginTop: 2 }} />
             <div>
               <p style={{ fontSize: "var(--text-body-sm)", fontWeight: 600, color: "var(--color-graphite)", marginBottom: 4 }}>Reminder &amp; pre-care sent via SMS</p>
               <p style={{ fontSize: "var(--text-body-sm)", color: "var(--color-slate)", lineHeight: 1.5 }}>
@@ -109,6 +136,10 @@ export default function ConfirmPage() {
             </div>
           </div>
         </Card>
+
+        {apptError && (
+          <p style={{ fontSize: "var(--text-caption)", color: "var(--color-stone)", marginBottom: 16 }}>{apptError}</p>
+        )}
 
         <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
           <Link href="/portal" className="btn-primary" style={{ fontSize: 15, padding: "12px 28px" }}>

@@ -28,7 +28,7 @@ export default function Header() {
       <div className="container" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 64 }}>
         <Link href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
           <Image
-            src="/logo/vitapharm-logo.png"
+            src="/logo/vitapharm-logo-removebg-preview.png"
             alt="Vitapharm"
             width={140}
             height={54}

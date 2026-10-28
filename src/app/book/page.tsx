@@ -75,7 +75,7 @@ export default function BookPage() {
     <div style={{ minHeight: "100vh" }}>
       <Header />
 
-      <div className="container" style={{ paddingTop: 48, paddingBottom: 64 }}>
+      <div className="container" style={{ paddingTop: 48, paddingBottom: cart.length > 0 ? 100 : 64 }}>
         {/* Page header */}
         <div style={{ marginBottom: 40 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
@@ -140,12 +140,12 @@ export default function BookPage() {
                       alignItems: "center",
                       justifyContent: "space-between",
                       padding: "16px 20px",
-                      background: selected ? "#f0fdf4" : "var(--color-white)",
-                      border: `1px solid ${selected ? "#16a34a" : "var(--color-silver)"}`,
+                      background: selected ? "rgba(139, 58, 0, 0.06)" : "var(--color-white)",
+                      border: `1px solid ${selected ? "var(--color-ink)" : "var(--color-silver)"}`,
                       borderRadius: 12,
                       cursor: "pointer",
                       transition: "all 0.15s ease",
-                      boxShadow: selected ? "0 0 0 1px #16a34a" : "var(--shadow-card)",
+                      boxShadow: selected ? "0 0 0 1px var(--color-ink)" : "var(--shadow-card)",
                     }}
                   >
                     <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
@@ -170,7 +170,7 @@ export default function BookPage() {
                         style={{
                           width: 28, height: 28,
                           borderRadius: "50%",
-                          background: selected ? "#16a34a" : "var(--color-ink)",
+                          background: "var(--color-ink)",
                           display: "flex", alignItems: "center", justifyContent: "center",
                           flexShrink: 0,
                           transition: "background 0.15s ease",
@@ -243,6 +243,37 @@ export default function BookPage() {
           </div>
         </div>
       </div>
+
+      {/* Floating continue bar — visible on mobile when cart has items */}
+      {cart.length > 0 && (
+        <div style={{
+          position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 50,
+          background: "var(--color-ink)", padding: "14px 20px",
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+          boxShadow: "0 -4px 20px rgba(139,58,0,0.25)",
+        }}>
+          <div>
+            <p style={{ fontSize: "var(--text-body-sm)", fontWeight: 600, color: "white", marginBottom: 2 }}>
+              {cart.length} service{cart.length > 1 ? "s" : ""} selected
+            </p>
+            <p style={{ fontSize: "var(--text-caption)", color: "rgba(255,255,255,0.7)" }}>
+              KES {totalPrice.toLocaleString()} · {totalDuration} min
+            </p>
+          </div>
+          <button
+            onClick={proceed}
+            style={{
+              display: "flex", alignItems: "center", gap: 8,
+              background: "white", color: "var(--color-ink)",
+              border: "none", borderRadius: 9999, padding: "10px 20px",
+              fontSize: "var(--text-body-sm)", fontWeight: 600,
+              fontFamily: "var(--font-body)", cursor: "pointer",
+            }}
+          >
+            Continue <ArrowRight size={14} />
+          </button>
+        </div>
+      )}
     </div>
   );
 }

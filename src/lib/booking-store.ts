@@ -15,6 +15,8 @@ export interface BookingState {
   selectedTime: string | null;
   therapistId: number | null;
   phone: string | null;
+  firstName: string | null;
+  lastName: string | null;
   otpVerified: boolean;
 }
 
@@ -47,6 +49,8 @@ function emptyState(): BookingState {
     selectedTime: null,
     therapistId: null,
     phone: null,
+    firstName: null,
+    lastName: null,
     otpVerified: false,
   };
 }

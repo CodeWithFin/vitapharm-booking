@@ -47,7 +47,7 @@ export default function VerifyPage() {
         body: JSON.stringify({ phone: `+254${phone.replace(/^0/, "")}` }),
       });
       if (!res.ok) throw new Error("Failed to send OTP");
-      setBookingState({ ...getBookingState(), phone: `+254${phone.replace(/^0/, "")}` });
+      setBookingState({ ...getBookingState(), phone: `+254${phone.replace(/^0/, "")}`, firstName: firstName || null, lastName: lastName || null });
       setStep("otp");
       setResendCountdown(60);
     } catch {
