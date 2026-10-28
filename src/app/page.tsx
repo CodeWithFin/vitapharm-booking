@@ -54,7 +54,7 @@ export default function HomePage() {
         <div className="container">
           <div className="hero-grid">
             <div>
-              <div className="tag" style={{ marginBottom: 20 }}>Aesthetic &amp; Clinical Spa</div>
+
               <h1
                 style={{
                   fontFamily: "var(--font-heading)",
