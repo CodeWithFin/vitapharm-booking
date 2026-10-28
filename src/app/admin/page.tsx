@@ -26,7 +26,7 @@ interface Appointment {
 
 const statusConfig: Record<string, { label: string; color: "green" | "blue" | "default" | "orange" | "red"; icon: React.ComponentType<{ size?: number; color?: string }> }> = {
   completed: { label: "Completed", color: "green", icon: CheckCircle },
-  in_progress: { label: "In progress", color: "blue", icon: Clock },
+  in_progress: { label: "In progress", color: "default", icon: Clock },
   confirmed: { label: "Confirmed", color: "default", icon: Calendar },
   pending: { label: "Pending", color: "orange", icon: Clock },
   no_show: { label: "No-show", color: "red", icon: XCircle },
@@ -135,10 +135,10 @@ export default function AdminDashboard() {
                           <p style={{ fontSize: "var(--text-body-sm)", fontWeight: 600 }}>
                             KES {appt.totalAmount.toLocaleString()}
                           </p>
-                          {appt.status === "confirmed" || appt.status === "pending" ? (
+                          {appt.status === "pending" ? (
                             <div style={{ display: "flex", gap: 6 }}>
                               <button
-                                onClick={() => updateStatus(appt.id, "in_progress")}
+                                onClick={() => updateStatus(appt.id, "confirmed")}
                                 disabled={updating === appt.id}
                                 style={{ fontSize: 12, padding: "5px 10px", background: "var(--color-ink)", color: "white", border: "none", borderRadius: 6, cursor: "pointer", fontFamily: "var(--font-body)", whiteSpace: "nowrap" }}
                               >
@@ -152,14 +152,23 @@ export default function AdminDashboard() {
                                 No-show
                               </button>
                             </div>
-                          ) : appt.status === "in_progress" ? (
-                            <button
-                              onClick={() => updateStatus(appt.id, "completed")}
-                              disabled={updating === appt.id}
-                              style={{ fontSize: 12, padding: "5px 10px", background: "var(--color-ink)", color: "white", border: "none", borderRadius: 6, cursor: "pointer", fontFamily: "var(--font-body)", whiteSpace: "nowrap" }}
-                            >
-                              Complete
-                            </button>
+                          ) : appt.status === "confirmed" ? (
+                            <div style={{ display: "flex", gap: 6 }}>
+                              <button
+                                onClick={() => updateStatus(appt.id, "completed")}
+                                disabled={updating === appt.id}
+                                style={{ fontSize: 12, padding: "5px 10px", background: "var(--color-ink)", color: "white", border: "none", borderRadius: 6, cursor: "pointer", fontFamily: "var(--font-body)", whiteSpace: "nowrap" }}
+                              >
+                                Complete
+                              </button>
+                              <button
+                                onClick={() => updateStatus(appt.id, "no_show")}
+                                disabled={updating === appt.id}
+                                style={{ fontSize: 12, padding: "5px 10px", background: "white", color: "#dc2626", border: "1px solid #fca5a5", borderRadius: 6, cursor: "pointer", fontFamily: "var(--font-body)" }}
+                              >
+                                No-show
+                              </button>
+                            </div>
                           ) : null}
                         </div>
                       </div>

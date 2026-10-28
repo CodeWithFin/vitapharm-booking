@@ -13,7 +13,7 @@ const CELL_HEIGHT = 64;
 const STATUS_COLORS: Record<string, { bg: string; border: string; label: string }> = {
   pending:     { bg: "rgba(139,58,0,0.06)",  border: "var(--color-ink)",  label: "Pending" },
   confirmed:   { bg: "rgba(139,58,0,0.06)",  border: "var(--color-ink)",  label: "Confirmed" },
-  in_progress: { bg: "rgba(139,58,0,0.12)", border: "var(--color-ink)",  label: "In progress" },
+  in_progress: { bg: "rgba(139,58,0,0.12)", border: "var(--color-ink)",  label: "Arrived" },
   completed:   { bg: "#f0fdf4",              border: "#16a34a",           label: "Completed" },
   no_show:     { bg: "#fee2e2",              border: "#dc2626",           label: "No-show" },
   cancelled:   { bg: "#f3f4f6",              border: "#9ca3af",           label: "Cancelled" },
@@ -162,9 +162,9 @@ export default function AdminCalendar() {
                 </p>
 
                 <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                  {selected.status !== "in_progress" && selected.status !== "completed" && selected.status !== "no_show" && (
+                  {selected.status === "pending" && (
                     <button
-                      onClick={() => updateStatus(selected.id, "in_progress")}
+                      onClick={() => updateStatus(selected.id, "confirmed")}
                       disabled={updating}
                       className="btn-primary btn-rect"
                       style={{ width: "100%", justifyContent: "center", fontSize: 13 }}
@@ -172,7 +172,7 @@ export default function AdminCalendar() {
                       Client arrived
                     </button>
                   )}
-                  {selected.status === "in_progress" && (
+                  {selected.status === "confirmed" && (
                     <button
                       onClick={() => updateStatus(selected.id, "completed")}
                       disabled={updating}
@@ -182,7 +182,7 @@ export default function AdminCalendar() {
                       Mark complete
                     </button>
                   )}
-                  {selected.status !== "no_show" && selected.status !== "completed" && (
+                  {selected.status !== "no_show" && selected.status !== "completed" && selected.status !== "pending" && (
                     <button
                       onClick={() => updateStatus(selected.id, "no_show")}
                       disabled={updating}

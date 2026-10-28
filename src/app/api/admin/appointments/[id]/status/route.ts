@@ -17,7 +17,7 @@ function isAdmin(req: NextRequest) {
 }
 
 const schema = z.object({
-  status: z.enum(["pending", "confirmed", "in_progress", "completed", "no_show", "cancelled"]),
+  status: z.enum(["pending", "confirmed", "completed", "no_show", "cancelled"]),
 });
 
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
