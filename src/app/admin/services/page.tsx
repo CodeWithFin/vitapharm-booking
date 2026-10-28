@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
 import { Plus, Edit2, ToggleLeft, ToggleRight, Clock, DollarSign } from "lucide-react";
+import AdminNav from "@/components/admin/AdminNav";
 
 const SERVICES = [
   { id: 1, name: "Hydra Facial", category: "Facial", duration: 60, price: 4500, active: true, bookings30d: 28 },
@@ -19,13 +19,6 @@ const SERVICES = [
   { id: 10, name: "Cellulite Treatment", category: "Body", duration: 60, price: 5000, active: true, bookings30d: 7 },
   { id: 11, name: "Initial Skin Consultation", category: "Consultation", duration: 30, price: 1500, active: true, bookings30d: 32 },
   { id: 12, name: "Follow-up Consultation", category: "Consultation", duration: 20, price: 800, active: true, bookings30d: 24 },
-];
-
-const navLinks = [
-  { label: "Overview", href: "/admin" },
-  { label: "Calendar", href: "/admin/calendar" },
-  { label: "Clients", href: "/admin/clients" },
-  { label: "Services", href: "/admin/services", active: true },
 ];
 
 const CATEGORY_COLORS: Record<string, "default" | "blue" | "green" | "orange"> = {
@@ -50,24 +43,7 @@ export default function AdminServices() {
 
   return (
     <div style={{ minHeight: "100vh" }}>
-      <header style={{ background: "var(--color-ink)", padding: "0 24px", height: 56, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 32 }}>
-          <span style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: 16, color: "white" }}>Vitapharm Admin</span>
-          <nav style={{ display: "flex", gap: 4 }}>
-            {navLinks.map((l) => (
-              <Link key={l.href} href={l.href} style={{
-                padding: "6px 12px", borderRadius: 6, fontSize: "var(--text-body-sm)",
-                color: l.active ? "white" : "rgba(255,255,255,0.6)",
-                background: l.active ? "rgba(255,255,255,0.12)" : "transparent",
-                textDecoration: "none",
-              }}>
-                {l.label}
-              </Link>
-            ))}
-          </nav>
-        </div>
-        <Link href="/" style={{ fontSize: "var(--text-body-sm)", color: "rgba(255,255,255,0.6)", textDecoration: "none" }}>← Back to site</Link>
-      </header>
+      <AdminNav active="Services" />
 
       <div className="container" style={{ paddingTop: 24, paddingBottom: 64 }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24 }}>

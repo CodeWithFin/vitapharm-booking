@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import { format, addDays, startOfWeek, eachDayOfInterval } from "date-fns";
+import AdminNav from "@/components/admin/AdminNav";
 
 const HOURS = Array.from({ length: 10 }, (_, i) => i + 9);
 
@@ -34,13 +34,6 @@ const statusBorderColors: Record<string, string> = {
   no_show: "#dc2626",
 };
 
-const navLinks = [
-  { label: "Overview", href: "/admin" },
-  { label: "Calendar", href: "/admin/calendar", active: true },
-  { label: "Clients", href: "/admin/clients" },
-  { label: "Services", href: "/admin/services" },
-];
-
 const CELL_HEIGHT = 64;
 
 export default function AdminCalendar() {
@@ -56,24 +49,7 @@ export default function AdminCalendar() {
 
   return (
     <div style={{ minHeight: "100vh" }}>
-      <header style={{ background: "var(--color-ink)", padding: "0 24px", height: 56, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 32 }}>
-          <span style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: 16, color: "white" }}>Vitapharm Admin</span>
-          <nav style={{ display: "flex", gap: 4 }}>
-            {navLinks.map((l) => (
-              <Link key={l.href} href={l.href} style={{
-                padding: "6px 12px", borderRadius: 6, fontSize: "var(--text-body-sm)",
-                color: l.active ? "white" : "rgba(255,255,255,0.6)",
-                background: l.active ? "rgba(255,255,255,0.12)" : "transparent",
-                textDecoration: "none",
-              }}>
-                {l.label}
-              </Link>
-            ))}
-          </nav>
-        </div>
-        <Link href="/" style={{ fontSize: "var(--text-body-sm)", color: "rgba(255,255,255,0.6)", textDecoration: "none" }}>← Back to site</Link>
-      </header>
+      <AdminNav active="Calendar" />
 
       <div className="container" style={{ paddingTop: 24, paddingBottom: 64 }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24 }}>
