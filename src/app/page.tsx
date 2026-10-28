@@ -2,15 +2,16 @@ import Link from "next/link";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Card from "@/components/ui/Card";
+import { Icon } from "@iconify/react";
 import { ArrowRight, Check, Clock, Shield, Sparkles, Star, Zap } from "lucide-react";
 
 const services = [
-  { name: "Hydra Facial", category: "Facial", duration: "60 min", price: "KES 4,500", icon: "✨" },
-  { name: "Chemical Peel", category: "Facial", duration: "45 min", price: "KES 3,800", icon: "🌿" },
-  { name: "Laser Hair Removal", category: "Laser", duration: "30–90 min", price: "From KES 2,500", icon: "⚡" },
-  { name: "Carbon Laser Facial", category: "Laser", duration: "60 min", price: "KES 6,000", icon: "🔬" },
-  { name: "Body Contouring", category: "Body", duration: "45 min", price: "KES 5,500", icon: "💎" },
-  { name: "Skin Consultation", category: "Consultation", duration: "30 min", price: "KES 1,500", icon: "🩺" },
+  { name: "Hydra Facial", category: "Facial", duration: "60 min", price: "KES 4,500", icon: "ph:drop-light" },
+  { name: "Chemical Peel", category: "Facial", duration: "45 min", price: "KES 3,800", icon: "ph:leaf-light" },
+  { name: "Laser Hair Removal", category: "Laser", duration: "30–90 min", price: "From KES 2,500", icon: "ph:lightning-light" },
+  { name: "Carbon Laser Facial", category: "Laser", duration: "60 min", price: "KES 6,000", icon: "ph:eye-light" },
+  { name: "Body Contouring", category: "Body", duration: "45 min", price: "KES 5,500", icon: "ph:sparkle-light" },
+  { name: "Skin Consultation", category: "Consultation", duration: "30 min", price: "KES 1,500", icon: "ph:stethoscope-light" },
 ];
 
 const features = [
@@ -39,7 +40,7 @@ const features = [
 const stats = [
   { value: "2,000+", label: "Happy clients" },
   { value: "15+", label: "Specialist therapists" },
-  { value: "4.9★", label: "Average rating" },
+  { value: "4.9", label: "Average rating" },
   { value: "Zero", label: "Double-bookings" },
 ];
 
@@ -99,7 +100,7 @@ export default function HomePage() {
                     {services.slice(0, 3).map((s) => (
                       <div key={s.name} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 12px", background: "var(--color-white)", borderRadius: 8, border: "1px solid var(--color-silver)" }}>
                         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                          <span style={{ fontSize: 18 }}>{s.icon}</span>
+                          <Icon icon={s.icon} width={20} height={20} color="var(--color-graphite)" />
                           <div>
                             <p style={{ fontSize: "var(--text-body-sm)", fontWeight: 500, color: "var(--color-graphite)", marginBottom: 2 }}>{s.name}</p>
                             <p style={{ fontSize: "var(--text-caption)", color: "var(--color-slate)" }}>{s.duration}</p>
@@ -178,7 +179,9 @@ export default function HomePage() {
             {services.map((service) => (
               <Card key={service.name} hover padding="md">
                 <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 16 }}>
-                  <span style={{ fontSize: 28 }}>{service.icon}</span>
+                  <div style={{ width: 40, height: 40, background: "var(--color-paper)", borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <Icon icon={service.icon} width={22} height={22} color="var(--color-graphite)" />
+                  </div>
                   <span className="tag">{service.category}</span>
                 </div>
                 <h3 style={{ fontSize: "var(--text-heading-sm)", fontWeight: 600, marginBottom: 6, letterSpacing: "0.2px" }}>{service.name}</h3>

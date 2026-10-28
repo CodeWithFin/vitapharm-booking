@@ -7,6 +7,7 @@ import Card from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
 import { getBookingState, setBookingState } from "@/lib/booking-store";
 import { ChevronLeft, ChevronRight, Clock, ArrowRight, ArrowLeft } from "lucide-react";
+import { Icon } from "@iconify/react";
 import { format, addMonths, subMonths, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, isBefore, startOfDay } from "date-fns";
 
 const THERAPISTS = [
@@ -233,13 +234,15 @@ export default function SchedulePage() {
 
               <div style={{ background: "var(--color-paper)", borderRadius: 8, padding: "10px 12px", marginBottom: 16 }}>
                 {selectedDate && (
-                  <p style={{ fontSize: "var(--text-body-sm)", marginBottom: 4 }}>
-                    📅 {format(selectedDate, "EEE, MMM d, yyyy")}
+                  <p style={{ fontSize: "var(--text-body-sm)", marginBottom: 4, display: "flex", alignItems: "center", gap: 6 }}>
+                    <Icon icon="ph:calendar-blank-light" width={14} height={14} color="var(--color-slate)" />
+                    {format(selectedDate, "EEE, MMM d, yyyy")}
                   </p>
                 )}
                 {selectedTime && (
-                  <p style={{ fontSize: "var(--text-body-sm)", marginBottom: 4 }}>
-                    🕐 {selectedTime} ({totalDuration} min)
+                  <p style={{ fontSize: "var(--text-body-sm)", marginBottom: 4, display: "flex", alignItems: "center", gap: 6 }}>
+                    <Icon icon="ph:clock-light" width={14} height={14} color="var(--color-slate)" />
+                    {selectedTime} ({totalDuration} min)
                   </p>
                 )}
                 <p style={{ fontSize: "var(--text-body-sm)", fontWeight: 700, marginTop: 8 }}>

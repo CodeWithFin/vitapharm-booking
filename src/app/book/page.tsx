@@ -8,6 +8,7 @@ import Button from "@/components/ui/Button";
 import Badge from "@/components/ui/Badge";
 import { CartService, getBookingState, setBookingState } from "@/lib/booking-store";
 import { Clock, Plus, Minus, ShoppingCart, ArrowRight, Search } from "lucide-react";
+import { Icon } from "@iconify/react";
 
 const CATEGORIES = ["All", "Facial", "Laser", "Body", "Consultation"];
 
@@ -27,7 +28,11 @@ const ALL_SERVICES: CartService[] = [
 ];
 
 const categoryIcons: Record<string, string> = {
-  Facial: "✨", Laser: "⚡", Body: "💎", Consultation: "🩺", All: "🌿",
+  Facial: "ph:drop-light",
+  Laser: "ph:lightning-light",
+  Body: "ph:sparkle-light",
+  Consultation: "ph:stethoscope-light",
+  All: "ph:squares-four-light",
 };
 
 export default function BookPage() {
@@ -116,7 +121,8 @@ export default function BookPage() {
                     transition: "all 0.15s ease",
                   }}
                 >
-                  {categoryIcons[cat]} {cat}
+                  <Icon icon={categoryIcons[cat]} width={13} height={13} />
+                  {cat}
                 </button>
               ))}
             </div>
@@ -143,8 +149,8 @@ export default function BookPage() {
                     }}
                   >
                     <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-                      <div style={{ width: 44, height: 44, background: "var(--color-paper)", borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, flexShrink: 0 }}>
-                        {categoryIcons[service.category]}
+                      <div style={{ width: 44, height: 44, background: "var(--color-paper)", borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                        <Icon icon={categoryIcons[service.category]} width={22} height={22} color="var(--color-graphite)" />
                       </div>
                       <div>
                         <p style={{ fontSize: "var(--text-body-sm)", fontWeight: 500, color: "var(--color-graphite)", marginBottom: 4 }}>{service.name}</p>
