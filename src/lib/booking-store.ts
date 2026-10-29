@@ -11,6 +11,7 @@ export interface CartService {
 
 export interface BookingState {
   cart: CartService[];
+  branch: "kilimani" | "cbd" | null;
   selectedDate: string | null;
   selectedTime: string | null;
   therapistId: number | null;
@@ -45,6 +46,7 @@ export function clearBookingState() {
 function emptyState(): BookingState {
   return {
     cart: [],
+    branch: null,
     selectedDate: null,
     selectedTime: null,
     therapistId: null,

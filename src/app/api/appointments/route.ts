@@ -38,6 +38,7 @@ const createSchema = z.object({
   firstName: z.string().min(1).max(100).optional(),
   lastName: z.string().min(1).max(100).optional(),
   therapistId: z.number().optional(),
+  branch: z.enum(["kilimani", "cbd"]).optional(),
   scheduledAt: z.string().datetime(),
   services: z.array(z.object({
     id: z.number(),
@@ -81,6 +82,7 @@ export async function POST(req: NextRequest) {
       endsAt,
       totalAmount: totalAmount.toFixed(2),
       status: "pending",
+      internalNotes: data.branch ? `branch:${data.branch}` : null,
     }).returning();
 
     // Insert line items
@@ -100,7 +102,8 @@ export async function POST(req: NextRequest) {
 
     // Notify admin via WhatsApp
     const clientName = [data.firstName, data.lastName].filter(Boolean).join(" ") || data.phone;
-    const adminMsg = `New booking at Vitapharm!\n\nClient: ${clientName}\nPhone: ${data.phone}\nService: ${serviceNames}\nDate: ${dateStr}\nAmount: KES ${totalAmount.toLocaleString()}`;
+    const branchLabel = data.branch === "kilimani" ? "Vitapharm Kilimani" : data.branch === "cbd" ? "Vitapharm Superior (CBD)" : "Vitapharm";
+    const adminMsg = `New booking at ${branchLabel}!\n\nClient: ${clientName}\nPhone: ${data.phone}\nService: ${serviceNames}\nDate: ${dateStr}\nAmount: KES ${totalAmount.toLocaleString()}`;
     notifyAdminWhatsApp(adminMsg);
 
     return NextResponse.json({ success: true, appointmentId: appointment.id }, { status: 201 });

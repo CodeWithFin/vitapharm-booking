@@ -31,6 +31,7 @@ export async function GET(req: NextRequest) {
       scheduledAt: appointments.scheduledAt,
       status: appointments.status,
       totalAmount: appointments.totalAmount,
+      internalNotes: appointments.internalNotes,
       firstName: users.firstName,
       lastName: users.lastName,
       phone: users.phone,
@@ -56,14 +57,18 @@ export async function GET(req: NextRequest) {
     svcMap[s.appointmentId].push(s.name);
   }
 
-  const result = rows.map((r) => ({
-    id: r.id,
-    scheduledAt: r.scheduledAt,
-    status: r.status,
-    totalAmount: Number(r.totalAmount),
-    clientName: [r.firstName, r.lastName].filter(Boolean).join(" ") || r.phone,
-    serviceNames: svcMap[r.id] ?? [],
-  }));
+  const result = rows.map((r) => {
+    const branchMatch = r.internalNotes?.match(/branch:(kilimani|cbd)/);
+    return {
+      id: r.id,
+      scheduledAt: r.scheduledAt,
+      status: r.status,
+      totalAmount: Number(r.totalAmount),
+      clientName: [r.firstName, r.lastName].filter(Boolean).join(" ") || r.phone,
+      serviceNames: svcMap[r.id] ?? [],
+      branch: branchMatch ? branchMatch[1] : null,
+    };
+  });
 
   return NextResponse.json({ appointments: result });
 }

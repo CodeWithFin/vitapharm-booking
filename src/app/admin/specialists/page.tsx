@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import AdminNav from "@/components/admin/AdminNav";
 import Card from "@/components/ui/Card";
-import { Plus, Edit2, Check, X, User } from "lucide-react";
+import { Plus, Edit2, Check, X, User, Trash2 } from "lucide-react";
 
 interface Specialist {
   id: number;
@@ -72,6 +72,12 @@ export default function AdminSpecialists() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ isBlocked: !s.isBlocked }),
     });
+    load();
+  };
+
+  const deleteSpecialist = async (s: Specialist) => {
+    if (!confirm(`Delete ${s.name}? This cannot be undone.`)) return;
+    await fetch(`/api/admin/specialists/${s.id}`, { method: "DELETE" });
     load();
   };
 
@@ -191,6 +197,9 @@ export default function AdminSpecialists() {
                       </button>
                       <button onClick={() => toggleBlock(s)} style={{ fontSize: 12, padding: "6px 12px", border: "1px solid var(--color-silver)", borderRadius: 8, background: "white", cursor: "pointer", fontFamily: "var(--font-body)", color: s.isBlocked ? "var(--color-ink)" : "#dc2626" }}>
                         {s.isBlocked ? "Activate" : "Deactivate"}
+                      </button>
+                      <button onClick={() => deleteSpecialist(s)} style={{ width: 32, height: 32, borderRadius: 8, border: "1px solid #fca5a5", background: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <Trash2 size={13} color="#dc2626" />
                       </button>
                     </div>
                   </div>

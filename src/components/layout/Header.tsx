@@ -6,9 +6,8 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 
 const navLinks = [
-  { label: "Services", href: "/book" },
+  { label: "Services", href: "/book/branch" },
   { label: "Portal", href: "/portal" },
-  { label: "About", href: "#about" },
 ];
 
 export default function Header() {
@@ -60,7 +59,7 @@ export default function Header() {
           <Link href="/portal" className="btn-secondary btn-rect hidden-mobile" style={{ fontSize: 13, padding: "7px 14px" }}>
             Sign in
           </Link>
-          <Link href="/book" className="btn-primary btn-rect" style={{ fontSize: 13, padding: "7px 14px" }}>
+          <Link href="/book/branch" className="btn-primary btn-rect" style={{ fontSize: 13, padding: "7px 14px" }}>
             Book now
           </Link>
           <button

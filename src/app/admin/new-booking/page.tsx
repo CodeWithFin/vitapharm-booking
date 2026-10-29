@@ -53,6 +53,7 @@ export default function AdminNewBooking() {
   const [phone, setPhone]         = useState("");
   const [date, setDate]           = useState("");
   const [time, setTime]           = useState("09:00");
+  const [branch, setBranch]       = useState<"kilimani" | "cbd">("kilimani");
   const [cart, setCart]           = useState<CartItem[]>([]);
   const [category, setCategory]   = useState("All");
   const [submitting, setSubmitting] = useState(false);
@@ -94,6 +95,7 @@ export default function AdminNewBooking() {
           phone: normalised,
           firstName: firstName || undefined,
           lastName: lastName || undefined,
+          branch,
           scheduledAt,
           services: cart,
         }),
@@ -165,6 +167,24 @@ export default function AdminNewBooking() {
               <div>
                 <label style={{ fontSize: "var(--text-caption)", color: "var(--color-slate)", display: "block", marginBottom: 4 }}>Phone number <span style={{ color: "#dc2626" }}>*</span></label>
                 <input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="07XX XXX XXX" style={{ width: "100%", fontFamily: "var(--font-body)" }} />
+              </div>
+            </Card>
+
+            {/* Branch */}
+            <Card padding="md">
+              <p style={{ fontSize: "var(--text-body-sm)", fontWeight: 600, marginBottom: 12 }}>Branch</p>
+              <div style={{ display: "flex", gap: 10 }}>
+                {([["kilimani", "Vitapharm Kilimani", "Adlife Plaza"], ["cbd", "Vitapharm Superior (CBD)", "Kenyatta Ave"]] as const).map(([id, name, addr]) => (
+                  <div key={id} onClick={() => setBranch(id)} style={{
+                    flex: 1, padding: "12px 14px", borderRadius: 10, cursor: "pointer",
+                    border: `${branch === id ? "1.5" : "1"}px solid ${branch === id ? "var(--color-ink)" : "var(--color-silver)"}`,
+                    background: branch === id ? "rgba(139,58,0,0.06)" : "white",
+                    transition: "all 0.12s ease",
+                  }}>
+                    <p style={{ fontSize: "var(--text-body-sm)", fontWeight: 600, marginBottom: 2 }}>{name}</p>
+                    <p style={{ fontSize: "var(--text-caption)", color: "var(--color-slate)" }}>{addr}</p>
+                  </div>
+                ))}
               </div>
             </Card>
 

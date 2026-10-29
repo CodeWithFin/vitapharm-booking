@@ -44,6 +44,6 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
 export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   if (!isAdmin(req)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const { id } = await params;
-  await db.update(users).set({ isBlocked: true }).where(eq(users.id, Number(id)));
+  await db.delete(users).where(eq(users.id, Number(id)));
   return NextResponse.json({ success: true });
 }

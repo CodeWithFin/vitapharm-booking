@@ -35,6 +35,7 @@ export default function ConfirmPage() {
           firstName: s.firstName,
           lastName: s.lastName,
           therapistId: s.therapistId ?? undefined,
+          branch: s.branch ?? undefined,
           scheduledAt,
           services: s.cart.map((c) => ({
             id: c.id,
@@ -120,8 +121,22 @@ export default function ConfirmPage() {
                 <MapPin size={16} color="var(--color-graphite)" />
               </div>
               <div>
-                <p style={{ fontSize: "var(--text-body-sm)", fontWeight: 500 }}>Vitapharm Clinic, Nairobi</p>
-                <p style={{ fontSize: "var(--text-caption)", color: "var(--color-slate)" }}>Location: full address in your SMS</p>
+                {state.branch === "kilimani" ? (
+                  <>
+                    <p style={{ fontSize: "var(--text-body-sm)", fontWeight: 500 }}>Vitapharm Kilimani</p>
+                    <p style={{ fontSize: "var(--text-caption)", color: "var(--color-slate)" }}>Adlife Plaza, Kilimani</p>
+                  </>
+                ) : state.branch === "cbd" ? (
+                  <>
+                    <p style={{ fontSize: "var(--text-body-sm)", fontWeight: 500 }}>Vitapharm Superior (CBD)</p>
+                    <p style={{ fontSize: "var(--text-caption)", color: "var(--color-slate)" }}>Superior Centre, Kenyatta Avenue</p>
+                  </>
+                ) : (
+                  <>
+                    <p style={{ fontSize: "var(--text-body-sm)", fontWeight: 500 }}>Vitapharm Clinic, Nairobi</p>
+                    <p style={{ fontSize: "var(--text-caption)", color: "var(--color-slate)" }}>Full address in your SMS</p>
+                  </>
+                )}
               </div>
             </div>
           </div>

@@ -67,8 +67,9 @@ export default function BookPage() {
 
   useEffect(() => {
     const state = getBookingState();
+    if (!state.branch) { router.replace("/book/branch"); return; }
     setCart(state.cart);
-  }, []);
+  }, [router]);
 
   const filtered = ALL_SERVICES.filter((s) => {
     const matchCat = activeCategory === "All" || s.category === activeCategory;
@@ -103,7 +104,7 @@ export default function BookPage() {
         {/* Page header */}
         <div style={{ marginBottom: 40 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
-            <span style={{ fontSize: "var(--text-body-sm)", color: "var(--color-slate)" }}>Step 1 of 3</span>
+            <span style={{ fontSize: "var(--text-body-sm)", color: "var(--color-slate)" }}>Step 2 of 5</span>
             <span className="tag">Choose services</span>
           </div>
           <h1 style={{ fontSize: "clamp(28px, 4vw, 40px)", fontWeight: 600, lineHeight: 1.2, letterSpacing: "0.3px", marginBottom: 12 }}>

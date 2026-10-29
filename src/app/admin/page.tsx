@@ -22,6 +22,7 @@ interface Appointment {
   totalAmount: number;
   clientName: string;
   serviceNames: string[];
+  branch: "kilimani" | "cbd" | null;
 }
 
 const statusConfig: Record<string, { label: string; color: "green" | "blue" | "default" | "orange" | "red"; icon: React.ComponentType<{ size?: number; color?: string }> }> = {
@@ -37,6 +38,7 @@ export default function AdminDashboard() {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState<number | null>(null);
+  const [branchFilter, setBranchFilter] = useState<"all" | "kilimani" | "cbd">("all");
 
   const loadData = () => {
     Promise.all([
@@ -99,20 +101,40 @@ export default function AdminDashboard() {
         <div style={{ display: "grid", gridTemplateColumns: "1fr 300px", gap: 24 }}>
           {/* Today's schedule */}
           <div>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
               <h2 style={{ fontSize: "var(--text-heading)", fontWeight: 600 }}>Today&apos;s schedule</h2>
               <Link href="/admin/calendar" style={{ fontSize: "var(--text-body-sm)", color: "var(--color-ink)", textDecoration: "none", display: "flex", alignItems: "center", gap: 4 }}>
                 Full calendar <ChevronRight size={14} />
               </Link>
             </div>
 
+            {/* Branch filter tabs */}
+            <div style={{ display: "flex", gap: 6, marginBottom: 16 }}>
+              {(["all", "kilimani", "cbd"] as const).map((b) => (
+                <button
+                  key={b}
+                  onClick={() => setBranchFilter(b)}
+                  style={{
+                    fontSize: 12, padding: "5px 12px",
+                    border: `1px solid ${branchFilter === b ? "var(--color-ink)" : "var(--color-silver)"}`,
+                    borderRadius: 20, cursor: "pointer", fontFamily: "var(--font-body)",
+                    background: branchFilter === b ? "var(--color-ink)" : "white",
+                    color: branchFilter === b ? "white" : "var(--color-slate)",
+                    transition: "all 0.12s ease",
+                  }}
+                >
+                  {b === "all" ? "All branches" : b === "kilimani" ? "Kilimani" : "CBD"}
+                </button>
+              ))}
+            </div>
+
             {loading ? (
               <Card padding="md"><p style={{ fontSize: "var(--text-body-sm)", color: "var(--color-slate)" }}>Loading…</p></Card>
-            ) : appointments.length === 0 ? (
-              <Card padding="md"><p style={{ fontSize: "var(--text-body-sm)", color: "var(--color-slate)" }}>No appointments scheduled for today.</p></Card>
+            ) : appointments.filter(a => branchFilter === "all" || a.branch === branchFilter).length === 0 ? (
+              <Card padding="md"><p style={{ fontSize: "var(--text-body-sm)", color: "var(--color-slate)" }}>No appointments for this filter.</p></Card>
             ) : (
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                {appointments.map((appt) => {
+                {appointments.filter(a => branchFilter === "all" || a.branch === branchFilter).map((appt) => {
                   const sc = statusConfig[appt.status] ?? statusConfig.pending;
                   const time = (() => { try { return format(parseISO(appt.scheduledAt), "HH:mm"); } catch { return "—"; } })();
                   return (
@@ -125,6 +147,11 @@ export default function AdminDashboard() {
                           <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 3 }}>
                             <p style={{ fontSize: "var(--text-body-sm)", fontWeight: 600 }}>{appt.clientName}</p>
                             <Badge color={sc.color}>{sc.label}</Badge>
+                            {appt.branch && (
+                              <span style={{ fontSize: 11, padding: "2px 7px", borderRadius: 10, background: appt.branch === "kilimani" ? "rgba(139,58,0,0.1)" : "rgba(0,80,139,0.1)", color: appt.branch === "kilimani" ? "var(--color-ink)" : "#00508B", fontWeight: 500 }}>
+                                {appt.branch === "kilimani" ? "Kilimani" : "CBD"}
+                              </span>
+                            )}
                           </div>
                           <p style={{ fontSize: "var(--text-caption)", color: "var(--color-slate)" }}>
                             {appt.serviceNames.join(", ") || "—"}

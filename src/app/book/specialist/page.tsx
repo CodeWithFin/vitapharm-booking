@@ -13,8 +13,8 @@ interface Specialist {
   bio: string;
 }
 
-const STEP = 2;
-const STEPS = ["Services", "Specialist", "Schedule", "Verify"];
+const STEP = 3;
+const STEPS = ["Branch", "Services", "Specialist", "Schedule", "Verify"];
 
 export default function SpecialistPage() {
   const router = useRouter();
