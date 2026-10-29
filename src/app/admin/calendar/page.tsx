@@ -45,7 +45,7 @@ export default function AdminCalendar() {
   const fetchWeek = useCallback((ws: Date) => {
     setLoading(true);
     const from = ws.toISOString();
-    const to = addDays(ws, 7).toISOString();
+    const to = addDays(ws, 8).toISOString();
     fetch(`/api/admin/week?from=${from}&to=${to}`)
       .then((r) => { if (r.status === 401) { router.push("/admin/login"); return null; } return r.json(); })
       .then((d) => { if (d) setAppts(d.appointments); })
@@ -54,7 +54,7 @@ export default function AdminCalendar() {
 
   useEffect(() => { if (weekStart) fetchWeek(weekStart); }, [weekStart, fetchWeek]);
 
-  const weekDays = weekStart ? eachDayOfInterval({ start: weekStart, end: addDays(weekStart, 4) }) : [];
+  const weekDays = weekStart ? eachDayOfInterval({ start: weekStart, end: addDays(weekStart, 6) }) : [];
 
   const updateStatus = async (id: number, status: string) => {
     setUpdating(true);
@@ -94,7 +94,7 @@ export default function AdminCalendar() {
           <Card padding="none" style={{ overflow: "auto" }}>
             <div style={{ minWidth: 600 }}>
               {/* Header */}
-              <div style={{ display: "grid", gridTemplateColumns: "60px repeat(5, 1fr)", borderBottom: "1px solid var(--color-silver)" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "60px repeat(7, 1fr)", borderBottom: "1px solid var(--color-silver)" }}>
                 <div style={{ padding: 12 }} />
                 {weekDays.map((day, i) => (
                   <div key={i} style={{ padding: "12px 8px", borderLeft: "1px solid var(--color-silver)", textAlign: "center" }}>
@@ -107,7 +107,7 @@ export default function AdminCalendar() {
               {/* Grid */}
               <div style={{ position: "relative" }}>
                 {HOURS.map((hour) => (
-                  <div key={hour} style={{ display: "grid", gridTemplateColumns: "60px repeat(5, 1fr)", height: CELL_HEIGHT }}>
+                  <div key={hour} style={{ display: "grid", gridTemplateColumns: "60px repeat(7, 1fr)", height: CELL_HEIGHT }}>
                     <div style={{ padding: "4px 8px", display: "flex", alignItems: "flex-start", justifyContent: "flex-end" }}>
                       <span style={{ fontSize: 11, color: "var(--color-stone)", fontWeight: 500 }}>{hour}:00</span>
                     </div>
@@ -128,8 +128,8 @@ export default function AdminCalendar() {
                   if (startH < 9 || startH >= 19) return null;
                   const top = (startH - 9) * CELL_HEIGHT;
                   const height = Math.max(durationH * CELL_HEIGHT - 4, 24);
-                  const left = `calc(60px + ${dayIndex} * (100% - 60px) / 5 + 4px)`;
-                  const width = `calc((100% - 60px) / 5 - 8px)`;
+                  const left = `calc(60px + ${dayIndex} * (100% - 60px) / 7 + 4px)`;
+                  const width = `calc((100% - 60px) / 7 - 8px)`;
                   const sc = STATUS_COLORS[appt.status] || STATUS_COLORS.pending;
                   return (
                     <div key={appt.id} onClick={() => setSelected(selected?.id === appt.id ? null : appt)} style={{
