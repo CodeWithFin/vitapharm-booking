@@ -94,7 +94,7 @@ export default function HomePage() {
             {/* Booking Widget Preview — hidden on mobile */}
             <div className="hero-widget">
               <Card padding="none" style={{ overflow: "hidden" }}>
-                <div style={{ padding: "20px 20px 16px", background: "var(--color-paper)", borderBottom: "1px solid var(--color-silver)" }}>
+                <div style={{ padding: "20px 20px 20px", background: "var(--color-paper)", borderBottom: "1px solid var(--color-silver)" }}>
                   <p style={{ fontSize: "var(--text-caption)", color: "var(--color-slate)", marginBottom: 12 }}>Popular this week</p>
                   <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                     {services.slice(0, 3).map((s) => (
