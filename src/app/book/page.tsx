@@ -92,7 +92,7 @@ export default function BookPage() {
 
   const proceed = () => {
     if (cart.length === 0) return;
-    router.push("/book/schedule");
+    router.push("/book/specialist");
   };
 
   return (
