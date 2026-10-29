@@ -8,7 +8,7 @@ import Button from "@/components/ui/Button";
 import { getBookingState, setBookingState } from "@/lib/booking-store";
 import { ChevronLeft, ChevronRight, Clock, ArrowRight, ArrowLeft } from "lucide-react";
 import { Icon } from "@iconify/react";
-import { format, addMonths, subMonths, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, isBefore, startOfDay } from "date-fns";
+import { format, addMonths, subMonths, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, isBefore, startOfDay, isToday as dateIsToday } from "date-fns";
 
 const THERAPISTS = [
   { id: 1, name: "Amara Osei", specialties: ["Facial", "Consultation"], avatar: "AO" },
@@ -45,6 +45,7 @@ export default function SchedulePage() {
   const days = eachDayOfInterval({ start: startOfMonth(currentMonth), end: endOfMonth(currentMonth) });
   const today = startOfDay(new Date());
   const firstDayOfWeek = (startOfMonth(currentMonth).getDay() + 6) % 7;
+  const nowMinutes = new Date().getHours() * 60 + new Date().getMinutes();
 
   const totalDuration = cart.reduce((s, i) => s + i.durationMinutes, 0);
   const totalPrice = cart.reduce((s, i) => s + i.price, 0);
@@ -72,7 +73,7 @@ export default function SchedulePage() {
             <ArrowLeft size={14} /> Back to services
           </button>
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
-            <span style={{ fontSize: "var(--text-body-sm)", color: "var(--color-slate)" }}>Step 2 of 3</span>
+            <span style={{ fontSize: "var(--text-body-sm)", color: "var(--color-slate)" }}>Step 4 of 5</span>
             <span className="tag">Pick a time</span>
           </div>
           <h1 style={{ fontSize: "clamp(28px, 4vw, 40px)", fontWeight: 600, lineHeight: 1.2, letterSpacing: "0.3px" }}>
@@ -146,27 +147,31 @@ export default function SchedulePage() {
               <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 2 }}>
                 {Array.from({ length: firstDayOfWeek }).map((_, i) => <div key={`empty-${i}`} />)}
                 {days.map((day) => {
+                  const isSunday = day.getDay() === 0;
                   const isPast = isBefore(day, today);
+                  const isDisabled = isPast || isSunday;
                   const isSelected = selectedDate && isSameDay(day, selectedDate);
                   const isToday = isSameDay(day, today);
                   return (
                     <button
                       key={day.toISOString()}
-                      onClick={() => { if (!isPast) { setSelectedDate(day); setSelectedTime(null); } }}
-                      disabled={isPast}
+                      onClick={() => { if (!isDisabled) { setSelectedDate(day); setSelectedTime(null); } }}
+                      disabled={isDisabled}
+                      title={isSunday ? "Closed on Sundays" : undefined}
                       style={{
                         padding: "8px 4px",
                         borderRadius: 8,
                         border: "none",
-                        cursor: isPast ? "default" : "pointer",
+                        cursor: isDisabled ? "default" : "pointer",
                         background: isSelected ? "var(--color-ink)" : isToday ? "var(--color-paper)" : "transparent",
-                        color: isSelected ? "white" : isPast ? "var(--color-stone)" : "var(--color-graphite)",
+                        color: isSelected ? "white" : isDisabled ? "var(--color-stone)" : "var(--color-graphite)",
                         fontWeight: isSelected || isToday ? 600 : 400,
                         fontSize: 13,
                         transition: "all 0.15s ease",
                         outline: isToday && !isSelected ? "2px solid var(--color-silver)" : "none",
                         outlineOffset: -1,
                         textAlign: "center",
+                        textDecoration: isSunday ? "line-through" : "none",
                       }}
                     >
                       {format(day, "d")}
@@ -177,6 +182,11 @@ export default function SchedulePage() {
             </Card>
 
             {/* Time slots */}
+            {selectedDate && dateIsToday(selectedDate) && (
+              <p style={{ fontSize: "var(--text-caption)", color: "var(--color-slate)", marginTop: -16 }}>
+                Past times for today are greyed out.
+              </p>
+            )}
             {selectedDate && (
               <Card padding="md">
                 <h3 style={{ fontSize: "var(--text-heading-sm)", fontWeight: 600, marginBottom: 16 }}>
@@ -184,13 +194,17 @@ export default function SchedulePage() {
                 </h3>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(80px, 1fr))", gap: 8 }}>
                   {TIME_SLOTS.map((slot) => {
-                    const unavail = UNAVAILABLE.has(slot);
+                    const [h, m] = slot.split(":").map(Number);
+                    const slotMinutes = h * 60 + m;
+                    const isPastSlot = selectedDate && dateIsToday(selectedDate) && slotMinutes <= nowMinutes;
+                    const unavail = UNAVAILABLE.has(slot) || !!isPastSlot;
                     const isSelected = selectedTime === slot;
                     return (
                       <button
                         key={slot}
                         onClick={() => { if (!unavail) setSelectedTime(slot); }}
                         disabled={unavail}
+                        title={isPastSlot ? "This time has already passed" : undefined}
                         style={{
                           padding: "8px 4px",
                           borderRadius: 8,
@@ -201,6 +215,7 @@ export default function SchedulePage() {
                           fontFamily: "var(--font-body)",
                           cursor: unavail ? "not-allowed" : "pointer",
                           textDecoration: unavail ? "line-through" : "none",
+                          opacity: isPastSlot ? 0.45 : 1,
                           transition: "all 0.15s ease",
                         }}
                       >
@@ -210,7 +225,7 @@ export default function SchedulePage() {
                   })}
                 </div>
                 <p style={{ fontSize: "var(--text-caption)", color: "var(--color-stone)", marginTop: 12 }}>
-                  Crossed-out times are already booked
+                  Crossed-out times are unavailable{selectedDate && dateIsToday(selectedDate) ? " or have already passed" : ""}
                 </p>
               </Card>
             )}
