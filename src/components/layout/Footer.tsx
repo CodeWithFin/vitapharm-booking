@@ -22,7 +22,7 @@ export default function Footer() {
 
           <div>
             <h4 style={{ fontFamily: "var(--font-heading)", fontSize: 14, fontWeight: 600, marginBottom: 16, color: "rgba(255,255,255,0.9)" }}>Services</h4>
-            {["Facials & Peels", "Laser Treatments", "Body Contouring", "Consultations"].map((s) => (
+            {["Facials & Peels", "Massage", "Waxing", "Consultations"].map((s) => (
               <Link key={s} href="/book" style={{ display: "block", fontSize: "var(--text-body-sm)", color: "rgba(255,255,255,0.6)", textDecoration: "none", marginBottom: 8 }}>{s}</Link>
             ))}
           </div>
@@ -37,16 +37,18 @@ export default function Footer() {
           <div>
             <h4 style={{ fontFamily: "var(--font-heading)", fontSize: 14, fontWeight: 600, marginBottom: 16, color: "rgba(255,255,255,0.9)" }}>Contact</h4>
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              {[
-                { icon: MapPin, text: "Nairobi, Kenya" },
-                { icon: Phone, text: "+254 700 000 000" },
-                { icon: Mail, text: "hello@vitapharm.com" },
-              ].map(({ icon: Icon, text }) => (
-                <div key={text} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: "var(--text-body-sm)", color: "rgba(255,255,255,0.6)" }}>
-                  <Icon size={14} style={{ flexShrink: 0 }} />
-                  {text}
-                </div>
-              ))}
+              <div style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: "var(--text-body-sm)", color: "rgba(255,255,255,0.6)" }}>
+                <MapPin size={14} style={{ flexShrink: 0, marginTop: 2 }} />
+                <span>Adlife Plaza, Kilimani<br />Superior Centre, Kenyatta Avenue</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: "var(--text-body-sm)", color: "rgba(255,255,255,0.6)" }}>
+                <Phone size={14} style={{ flexShrink: 0, marginTop: 2 }} />
+                <span>+254 718 171 253<br />+254 705 749 875</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: "var(--text-body-sm)", color: "rgba(255,255,255,0.6)" }}>
+                <Mail size={14} style={{ flexShrink: 0 }} />
+                vitapharmab@gmail.com
+              </div>
             </div>
           </div>
         </div>
